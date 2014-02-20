@@ -1,0 +1,42 @@
+//alebata grammar
+start -> statement
+statement -> declaration | assignment | operation | conditional | printout
+
+declaration -> gawa ng var_name [, var_name]* end
+
+assignment -> string_assign | num_assign | bool_assign
+string_assign -> var_name ay value end
+num_assign -> var_name ay digits end
+bool_assign -> var_name ay boolean end
+
+operation -> arithmetic | logical | comparative
+logical -> var_name ay value logical_op value end
+comparative -> num_compare | string_compare
+num_compare -> var_name ay compare_op sa (var_name | value) end
+string_compare -> var_name ay hindi_op (var_name | value) end
+
+printout -> ilabas mo beybe value x end
+
+
+//literals
+var_name -> a[a-zA-Z]_*
+digits -> [0-9]*
+string -> *
+value -> lquote string rquote | digits
+
+//reserved words
+ay -> AY
+gawa -> GAWA
+ng -> NG
+sa -> SA
+ilabas -> ILABAS
+mo -> MO
+beybeh -> BEYBEH
+end -> !
+lquote -> "
+rquote -> "
+comma -> ,
+boolean -> TAMA | MALI
+logical_op -> AT | O | HINDI
+hindi_op -> HINDI | (empty)
+compare_op -> MAS MALIIT | PANTAY | MAS MALAKI | HINDI PANTAY | PANTAY O MAS MALIIT | PANTAY O MAS MALAKI
