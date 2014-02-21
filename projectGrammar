@@ -1,6 +1,16 @@
 //alebata grammar
-start -> statement
-statement -> declaration | assignment  | conditional | printout
+//declaration | assignment | conditional | iteration | printout
+start -> D | A | C | I | P
+
+D -> GAWA NG d0! | GAWA NG x NA d1!
+d0 -> var_name, d0 | d1
+d1 -> var_name
+
+A -> var_name AY a!
+a -> value | boolean
+
+
+x -> (0-9)x | eps
 
 declaration -> gawa ng var_name [, var_name]* end
 
