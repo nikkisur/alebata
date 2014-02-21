@@ -1,19 +1,23 @@
 //alebata grammar
 start -> statement
-statement -> declaration | assignment | operation | conditional | printout
+statement -> declaration | assignment  | conditional | printout
 
 declaration -> gawa ng var_name [, var_name]* end
 
-assignment -> string_assign | num_assign | bool_assign
-string_assign -> var_name ay value end
-num_assign -> var_name ay digits end
-bool_assign -> var_name ay boolean end
+assignment -> var_name ay assign_value
+assign_value -> string_assign | num_assign | bool_assign | arithmetic
+string_assign -> value end
+num_assign -> digits end
+bool_assign -> boolean end
 
-operation -> arithmetic | logical | comparative
-logical -> var_name ay value logical_op value end
+conditional -> kung operation gawin ito statement tama na end
+operation -> var_name ay cond
+cond -> logical | comparative
+logical -> value logical_op value end
 comparative -> num_compare | string_compare
-num_compare -> var_name ay compare_op sa (var_name | value) end
-string_compare -> var_name ay hindi_op (var_name | value) end
+num_compare -> compare_op sa var_val end
+string_compare -> hindi_op var_val end
+var_val -> var_name | value
 
 printout -> ilabas mo beybe value x end
 
