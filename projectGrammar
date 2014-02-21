@@ -23,9 +23,9 @@ printout -> ilabas mo beybe value x end
 
 
 //literals
-var_name -> a[a-zA-Z]_*
-digits -> [0-9]*
-string -> *
+var_name -> [a-z][a-zA-Z]*_*
+digits -> [0-9]+
+string -> .*
 value -> lquote string rquote | digits
 
 //reserved words
