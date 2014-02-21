@@ -1,24 +1,15 @@
 //alebata grammar
 //declaration | assignment | conditional | iteration | printout
-start -> D | A | C | I | P
 
-D -> GAWA NG d0! | GAWA NG x NA d1!
+start -> statement
+statement -> declaration | assignment | conditional | iteration | printout
+
+declaration -> GAWA NG d0! | GAWA NG digit NA d1!
 d0 -> var_name, d0 | d1
 d1 -> var_name
 
-A -> var_name AY a!
-a -> value | boolean
-
-
-x -> (0-9)x | eps
-
-declaration -> gawa ng var_name [, var_name]* end
-
-assignment -> var_name ay assign_value
-assign_value -> string_assign | num_assign | bool_assign | arithmetic
-string_assign -> value end
-num_assign -> digits end
-bool_assign -> boolean end
+assignment -> var_name AY a!
+a -> value | boolean | arithmetic
 
 conditional -> kung operation gawin ito statement tama na end
 operation -> var_name ay cond
@@ -31,26 +22,12 @@ var_val -> var_name | value
 
 printout -> ilabas mo beybe value x end
 
-
 //literals
-var_name -> [a-z][a-zA-Z]*_*
-digits -> [0-9]+
+var_name -> [a-z][a-zA-Z]*[0-9]*_*
+num -> digit.digit | digit
+digit -> [0-9]+
 string -> .*
-value -> lquote string rquote | digits
-
-//reserved words
-ay -> AY
-gawa -> GAWA
-ng -> NG
-sa -> SA
-ilabas -> ILABAS
-mo -> MO
-beybeh -> BEYBEH
-end -> !
-lquote -> "
-rquote -> "
-comma -> ,
+value ->  "string" | num
 boolean -> TAMA | MALI
-logical_op -> AT | O | HINDI
-hindi_op -> HINDI | (empty)
-compare_op -> MAS MALIIT | PANTAY | MAS MALAKI | HINDI PANTAY | PANTAY O MAS MALIIT | PANTAY O MAS MALAKI
+
+
