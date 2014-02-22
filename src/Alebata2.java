@@ -590,6 +590,7 @@ public class Alebata2 {
 		return true;
 	}
 
+<<<<<<< HEAD
 	public static Boolean checkTrue(String value, String var){
 		if(value != null){
 			if(value.equals("TRUE"))
@@ -613,6 +614,8 @@ public class Alebata2 {
 		}
 		return true;
 	}
+=======
+>>>>>>> d356c06f0269949ef7ea4b1321a5f4a3792b4763
 	public static void createArray(String name, int num){
 		for(int a = 1; a < num+1; a++){
 			variables.put(name + "#" + a, "");
