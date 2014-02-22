@@ -1,24 +1,15 @@
 //alebata grammar
+// "eps" means epsilon
+
 //declaration | assignment | conditional | iteration | printout
 start -> D | A | C | I | P
 
-D -> GAWA NG d0! | GAWA NG x NA d1!
-d0 -> var_name, d0 | d1
-d1 -> var_name
+D -> gawa ng D0 end | gawa ng digits na D1 end
+D0 -> var_name0, D0 | D1
+D1 -> var_name0
 
-A -> var_name AY a!
-a -> value | boolean
-
-
-x -> (0-9)x | eps
-
-declaration -> gawa ng var_name [, var_name]* end
-
-assignment -> var_name ay assign_value
-assign_value -> string_assign | num_assign | bool_assign | arithmetic
-string_assign -> value end
-num_assign -> digits end
-bool_assign -> boolean end
+A -> var_name0 ay value end | var_name0 ay Math end
+Math -> (Math) math_op number0 | number0 math_op number0
 
 conditional -> kung operation gawin ito statement tama na end
 operation -> var_name ay cond
@@ -28,15 +19,18 @@ comparative -> num_compare | string_compare
 num_compare -> compare_op sa var_val end
 string_compare -> hindi_op var_val end
 var_val -> var_name | value
-
 printout -> ilabas mo beybe value x end
 
 
 //literals
-var_name -> [a-z][a-zA-Z]*_*
-digits -> [0-9]+
-string -> .*
-value -> lquote string rquote | digits
+// "[.]" connotes "any character"
+var_name0 -> [a-z] | [a-z]var_name1
+var_name1 -> [a-zA-Z_]var_name1 | eps
+digits -> [0-9]digits | eps
+number0 -> -(number1) | number1
+number1 -> digits | digits.digits
+string -> [.]string | eps
+value -> lquote string rquote | number0 | boolean
 
 //reserved words
 ay -> AY
@@ -51,6 +45,8 @@ lquote -> "
 rquote -> "
 comma -> ,
 boolean -> TAMA | MALI
+hindi_op -> HINDI | eps
+math_op -> + | - | * | / | % | ^
 logical_op -> AT | O | HINDI
-hindi_op -> HINDI | (empty)
-compare_op -> MAS MALIIT | PANTAY | MAS MALAKI | HINDI PANTAY | PANTAY O MAS MALIIT | PANTAY O MAS MALAKI
+str_compare_op -> PAREHO
+num_compare_op -> MAS MALIIT | PANTAY | MAS MALAKI | HINDI PANTAY | PANTAY O MAS MALIIT | PANTAY O MAS MALAKI
