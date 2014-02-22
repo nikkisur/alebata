@@ -1,61 +1,18 @@
 AT		TYPE3
 AY		EQUALS
-<<<<<<< HEAD
 BEYBEH	PRINT3
-=======
-<<<<<<< HEAD
-BEYBEH	PRINT3
-=======
-<<<<<<< HEAD
-BEYBEH	PRINT3
-=======
-<<<<<<< HEAD
-=======
-BEYBEH	PRINT3
->>>>>>> Ayoko na
->>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
->>>>>>> 51275bcc005c917ddcb071a23cff300fa665ce4e
->>>>>>> 4d7b5756b4adeb219c2d92efde2d8d572b330c9f
 GAWA	TYPE1
 GAWIN	DO1
 HINDI	NOT
 ITO		DO2
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-KUNG	IF
-MALI	FALSE
-NG		TYPE2
-O		OR
-=======
->>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
->>>>>>> 51275bcc005c917ddcb071a23cff300fa665ce4e
->>>>>>> 4d7b5756b4adeb219c2d92efde2d8d572b330c9f
 ILABAS	PRINT1
 KUNG	IF
 MALI	FALSE
 MO		PRINT2
-<<<<<<< HEAD
 NA 		ARRAYTYPE
 NG		TYPE2
 O		OR
 PATI	ADDIT
-=======
-NG		TYPE2
-O		OR
-PATI	ADDIT
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Ayoko na
->>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
->>>>>>> 51275bcc005c917ddcb071a23cff300fa665ce4e
->>>>>>> 4d7b5756b4adeb219c2d92efde2d8d572b330c9f
 PERO 	ELSE
 TAMA	TRUE
 !		TERMINATOR
@@ -66,32 +23,7 @@ TAMA	TRUE
 *		MULT
 /		DIVIDE
 %		MODULO
-<<<<<<< HEAD
 ^		EXP
 \		SLASH
 (		PAREN
 )		ENDPAREN
-=======
-<<<<<<< HEAD
-^		EXP
-\		SLASH
-(		PAREN
-)		ENDPAREN
-=======
-<<<<<<< HEAD
-^		EXP
-\		SLASH
-(		PAREN
-)		ENDPAREN
-=======
-<<<<<<< HEAD
-^		EXP
-=======
-^		EXP
-\		SLASH
-(		PAREN
-)		ENDPAREN
->>>>>>> Ayoko na
->>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
->>>>>>> 51275bcc005c917ddcb071a23cff300fa665ce4e
->>>>>>> 4d7b5756b4adeb219c2d92efde2d8d572b330c9f
