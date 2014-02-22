@@ -16,28 +16,33 @@ Math -> (Math) math_op number0 | number0 math_op number0
 C -> kung op G end
 op -> var_name0 ay cond
 cond -> logic | compare
-logic -> compare logic_op compare end | compare logic_op logic
+logic -> compare logic_op op end | compare logic_op op
 compare -> boolean | num_compare | str_compare
-num_compare -> num_compare_op sa var_val0 end
-str_compare -> hindi_op str_compare_op sa var_val1 end
+num_compare -> num_compare_op sa var_val0
+str_compare -> hindi_op str_compare_op sa var_val1
 var_val0 -> var_name0 | number0
 var_val1 -> var_name0 | string
 
-P -> ilabas mo beybe P1 end
+I -> habang op G tigil na end
+
+G -> gawin ito G1 tigil na
+G1 -> statement new_line G1 | eps
+
+P -> ilabas mo beybeh P1 end
 P1 -> P1 pati value | P1 pati boolean | value | boolean
 
-G -> gawin ito G1 tama na
-G1 -> statement \n G1 | eps
-
 //literals
-// "[.]" connotes "any character"
 var_name0 -> [a-z] | [a-z]var_name1
-var_name1 -> [a-zA-Z_]var_name1 | eps
+var_name1 -> [a-zA-Z_]var_name1 | var_name2 | eps
+//var_name2 is for values in an array
+var_name2 -> #digits
 number0 -> -(number1) | number1
 number1 -> digits | digits.digits
 digits -> [0-9]digits | eps
+// "[.]" connotes "any character"
 string -> [.]string | eps
 value -> lquote string rquote | number0
+new_line -> \n
 
 //reserved words
 ay -> AY
@@ -48,6 +53,10 @@ ilabas -> ILABAS
 mo -> MO
 beybeh -> BEYBEH
 pati -> PATI
+gawin -> GAWIN
+ito -> ITO
+tigil -> TIGIL
+na -> NA
 end -> !
 lquote -> "
 rquote -> "
@@ -55,6 +64,6 @@ comma -> ,
 boolean -> TAMA | MALI
 hindi_op -> HINDI | eps
 math_op -> + | - | * | / | % | ^
-logic_op -> AT | O | HINDI(logic)
+logic_op -> AT | O | AT HINDI | O HINDI
 str_compare_op -> PAREHO
 num_compare_op -> MAS MALIIT | PANTAY | MAS MALAKI | HINDI PANTAY | PANTAY O MAS MALIIT | PANTAY O MAS MALAKI
