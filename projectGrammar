@@ -67,3 +67,13 @@ math_op -> + | - | * | / | % | ^
 logic_op -> AT | O | AT HINDI | O HINDI
 str_compare_op -> PAREHO
 num_compare_op -> MAS MALIIT | PANTAY | MAS MALAKI | HINDI PANTAY | PANTAY O MAS MALIIT | PANTAY O MAS MALAKI
+
+//MATH OP
+A -> BC
+B -> DE
+C -> -BC | +BC | eps
+D -> FG
+E -> *DE | /DE | %DE | eps
+F -> H
+G -> ^FG | eps
+H -> number | (A)
