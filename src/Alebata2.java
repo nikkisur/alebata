@@ -27,9 +27,18 @@ public class Alebata2 {
 
 	private static int index = 0;
 	private static String token;
+<<<<<<< HEAD
 	private static float numValue;
 	private static String operation = "";
 	private static String equation = "";
+=======
+<<<<<<< HEAD
+=======
+	private static float numValue;
+	private static String operation = "";
+	private static String equation = "";
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 
 	public static void main(String args[]){
 		// a variable for scanning every line of user input
@@ -50,10 +59,31 @@ public class Alebata2 {
 
 	public static void action(){
 		while(scan.hasNext()){
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+			String[] words = scan.nextLine().split("(?<=\\!)|(?=\\!)| ");
+			for(String word : words){
+				if(reservedWords.get(word) != null){
+					tokens.add(reservedWords.get(word));
+					lexemes.add(word);
+										System.out.println(word + "			" + reservedWords.get(word));
+				}
+				else{
+					tokens.add("IDENT");
+					lexemes.add(word);
+										System.out.println(word + "			" + "IDENT");
+				}
+			}
+		}
+
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			String line = scan.nextLine();
 			String[] words = line.split("(?<=[!\"()*/%^+-])|(?=[!\"()*/%^+-])| ");
 			String value = "";
 
+<<<<<<< HEAD
 			if(line.contains("\"")){
 				for(int a = 0; a < words.length; a++){
 					String word = words[a];
@@ -120,10 +150,27 @@ public class Alebata2 {
 							lexemes.add(word);
 							//						System.out.println(word + "			IDENT");
 						}
+=======
+			for(String word: words){
+				if(reservedWords.get(word) != null){
+					tokens.add(reservedWords.get(word));
+					lexemes.add(word);
+//					System.out.println(word + "			"+ reservedWords.get(word));
+				}
+				else{
+					if(!word.equals("")){
+						tokens.add("IDENT");
+						lexemes.add(word);
+//						System.out.println(word + "			IDENT");
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 					}
 				}
 			}
 		}
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 	}
 
 	public static void getNextToken(){
@@ -144,6 +191,15 @@ public class Alebata2 {
 				getNextToken();
 				C();
 			}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+			getNextToken();
+		}
+	}
+	
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			else if(token.equals("PRINT1")){
 				getNextToken();
 				D();
@@ -153,6 +209,10 @@ public class Alebata2 {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 	//B -> NG
 	public static void B(){
 		if(token != null){
@@ -162,7 +222,14 @@ public class Alebata2 {
 					checkVar(lexemes.get(index-1));
 					getNextToken();
 				}
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 				if(token == null || !token.equals("TERMINATOR")){
 					System.out.println("Missing ! at the end of line");
 					close();
@@ -178,6 +245,19 @@ public class Alebata2 {
 			close();
 		}
 	}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	
+	public static void C(){
+		if(variables.get(lexemes.get(index-2)) != null){
+			String var = lexemes.get(index-2);
+			if(token.equals("EQUALS")){
+				getNextToken();
+				if(token.equals("DQUOTE")){
+					System.out.println("her");
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 
 	public static void C(){
 		String var = lexemes.get(index-2);
@@ -185,10 +265,29 @@ public class Alebata2 {
 			if(token.equals("EQUALS")){
 				getNextToken();
 				if(token.equals("DQUOTE")){
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 					getNextToken();
 					String value = "";
 					while(!token.equals("DQUOTE")){
 						value += lexemes.get(index-1);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+						getNextToken();
+						if(token == null){
+							System.out.println("Missing ! at the end of line");
+							close();
+						}
+					}
+					System.out.println(var + " = " + value);
+				}
+				else{
+					//math op
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 						if(token != null && token.equals("SLASH")){
 							getNextToken();
 							if(token!= null && token.equals("DQUOTE")){
@@ -267,6 +366,10 @@ public class Alebata2 {
 						}
 					}
 					getNextToken();
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 				}
 				if(token == null || !token.equals("TERMINATOR")){
 					System.out.println("Missing ! at the end of line");
@@ -277,6 +380,18 @@ public class Alebata2 {
 				System.out.println("Syntax error: ILABAS MO BEYBEH <value>");
 				close();
 			}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+			else{
+				System.out.println("Syntax should be: <var_name> AY <value>");
+			}
+		}
+		else{
+			System.out.println(lexemes.get(index-2) + " must be initialized.");
+		}
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 		}
 		else{
 			System.out.println("Syntax error: ILABAS MO BEYBEH <value>");
@@ -307,6 +422,7 @@ public class Alebata2 {
 			getNextToken();
 			if(token.equals("MINUS")){
 				getNextToken();
+<<<<<<< HEAD
 				BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
 				if(ball.type.equals("number"))
 					lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
@@ -314,6 +430,9 @@ public class Alebata2 {
 					System.out.println("Wrong number format");
 					close();
 				}
+=======
+				lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			}
 			operation = "+";
 			equation += operation;
@@ -325,6 +444,7 @@ public class Alebata2 {
 			getNextToken();
 			if(token.equals("MINUS")){
 				getNextToken();
+<<<<<<< HEAD
 				BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
 				if(ball.type.equals("number"))
 					lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
@@ -332,6 +452,9 @@ public class Alebata2 {
 					System.out.println("Wrong number format");
 					close();
 				}
+=======
+				lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			}
 			operation = "-";
 			equation += operation;
@@ -350,6 +473,7 @@ public class Alebata2 {
 			getNextToken();
 			if(token.equals("MINUS")){
 				getNextToken();
+<<<<<<< HEAD
 				BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
 				if(ball.type.equals("number"))
 					lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
@@ -357,6 +481,9 @@ public class Alebata2 {
 					System.out.println("Wrong number format");
 					close();
 				}
+=======
+				lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			}
 			operation = "*";
 			equation += operation;
@@ -367,6 +494,7 @@ public class Alebata2 {
 			getNextToken();
 			if(token.equals("MINUS")){
 				getNextToken();
+<<<<<<< HEAD
 				BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
 				if(ball.type.equals("number"))
 					lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
@@ -374,6 +502,9 @@ public class Alebata2 {
 					System.out.println("Wrong number format");
 					close();
 				}
+=======
+				lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			}
 			operation = "/";
 			equation += operation;
@@ -383,6 +514,7 @@ public class Alebata2 {
 			getNextToken();
 			if(token.equals("MINUS")){
 				getNextToken();
+<<<<<<< HEAD
 				BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
 				if(ball.type.equals("number"))
 					lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
@@ -390,6 +522,9 @@ public class Alebata2 {
 					System.out.println("Wrong number format");
 					close();
 				}
+=======
+				lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			}
 			operation = "%";
 			equation += operation;
@@ -407,6 +542,7 @@ public class Alebata2 {
 			getNextToken();
 			if(token.equals("MINUS")){
 				getNextToken();
+<<<<<<< HEAD
 				BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
 				if(ball.type.equals("number"))
 					lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
@@ -414,6 +550,9 @@ public class Alebata2 {
 					System.out.println("Wrong number format");
 					close();
 				}
+=======
+				lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 			}
 			operation = "%";
 			equation += operation;
@@ -448,6 +587,10 @@ public class Alebata2 {
 				close();
 			}
 		}
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 	}
 
 	// method for checking validity of variable name
@@ -465,6 +608,28 @@ public class Alebata2 {
 					System.out.println("Hindi maaring null o walang pangalan ang variable.");
 					close();
 				}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+				else{
+					// iterate through each character in the variable name
+					for(int b = 1; b < temp.length(); b++){
+						// the case where a character in the variable name is not in the set of valid characters
+						if(character2.indexOf(String.valueOf(temp.charAt(b))) == -1){
+							// this is only reached if an invalid character is reached
+							// the only invalid character allowed is a period and that's if it's the last character of the line -- signifying the end of a line in the "Ale, Bata" language
+							System.out.println("	Maari lamang ang a-z, 0-9,- at _.");
+							close();
+						}
+						// the case where all characters in the variable name are valid and we're iterating through the last character of said name
+						else if(b == temp.length()-1){
+							if(variables.get(temp) != null)
+								System.out.println("	Mayroon nang variable na ang pangalan ay " + temp + ".");
+							else{
+								variables.put(temp, "");
+								System.out.println("	Gumawa ka ng variable na ang pangalan ay " + temp + ".");
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 
 				// the case where a variable name exists for checking
 				if(!temp.isEmpty()){
@@ -493,6 +658,10 @@ public class Alebata2 {
 									variables.put(temp, "");
 									//									System.out.println("	Gumawa ka ng variable na ang pangalan ay " + temp + ".");
 								}
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 							}
 						}
 					}
@@ -519,9 +688,22 @@ public class Alebata2 {
 		}
 
 	}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	
+	public static void close(){
+		System.exit(0);
+		
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 
 	public static void close(){
 		System.exit(0);
 
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 	}
 }

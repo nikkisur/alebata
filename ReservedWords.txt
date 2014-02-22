@@ -1,10 +1,26 @@
 AT		TYPE3
 AY		EQUALS
+<<<<<<< HEAD
 BEYBEH	PRINT3
+=======
+<<<<<<< HEAD
+=======
+BEYBEH	PRINT3
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 GAWA	TYPE1
 GAWIN	DO1
 HINDI	NOT
 ITO		DO2
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+KUNG	IF
+MALI	FALSE
+NG		TYPE2
+O		OR
+=======
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 ILABAS	PRINT1
 KUNG	IF
 MALI	FALSE
@@ -12,6 +28,10 @@ MO		PRINT2
 NG		TYPE2
 O		OR
 PATI	ADDIT
+<<<<<<< HEAD
+=======
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
 PERO 	ELSE
 TAMA	TRUE
 !		TERMINATOR
@@ -22,7 +42,18 @@ TAMA	TRUE
 *		MULT
 /		DIVIDE
 %		MODULO
+<<<<<<< HEAD
 ^		EXP
 \		SLASH
 (		PAREN
 )		ENDPAREN
+=======
+<<<<<<< HEAD
+^		EXP
+=======
+^		EXP
+\		SLASH
+(		PAREN
+)		ENDPAREN
+>>>>>>> Ayoko na
+>>>>>>> e33c625af933d50f8c3e73fcce77513514a55090
