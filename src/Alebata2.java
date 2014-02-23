@@ -74,15 +74,21 @@ public class Alebata2 {
 						}
 						if(reservedWords.get(word) != null){
 							tokens.add(reservedWords.get(word));
-
 							lexemes.add(word);
-							//																		System.out.println(word + "			"+ reservedWords.get(word));
+							//System.out.println(word + "			"+ reservedWords.get(word));
 						}
 						else{
 							if(!word.equals("") && !word.equals(" ")){
-								tokens.add("IDENT");
+								if(isNumeric(word))
+								{
+									tokens.add("NUMBER");
+								}
+								else
+								{
+									tokens.add("IDENT");
+								}
 								lexemes.add(word);
-								//							System.out.println(word + "			IDENT");
+								//System.out.println(word + "			IDENT");
 							}
 							else if(word.equals(" ")){
 								tokens.add("SPACE");
@@ -100,7 +106,14 @@ public class Alebata2 {
 						}
 						else{
 							if(!word.equals("")){
-								tokens.add("IDENT");
+								if(isNumeric(word))
+								{
+									tokens.add("NUMBER");
+								}	
+								else
+								{
+									tokens.add("IDENT");
+								}
 								lexemes.add(word);
 								//						System.out.println(word + "			IDENT");
 							}
@@ -133,7 +146,7 @@ public class Alebata2 {
 		// }
 	}
 
-	//A -> GAWAB 
+	//A -> 'GAWA' B | IDENT C | 'ILABAS' D 
 	public static void A(){
 		while(token != null){
 			if(token.equals("TYPE1")){
@@ -152,7 +165,7 @@ public class Alebata2 {
 		}
 	}
 
-	//B -> NG
+	//B -> 'NG' IDENT 
 	public static void B(){
 		if(token != null){
 			if(token.equals("TYPE2")){
@@ -198,7 +211,7 @@ public class Alebata2 {
 		}
 	}
 
-	//AY
+	//C -> 'AY'
 	public static void C(){
 		String var = lexemes.get(index-2);
 		if(variables.get(lexemes.get(index-2)) != null){
@@ -545,6 +558,19 @@ public class Alebata2 {
 	//		return -1;
 	//	}
 
+	//method checks if string is numeric
+	public static boolean isNumeric(String str)
+	{
+		try  
+	  	{  
+	   		double d = Double.parseDouble(str);  
+	  	}  
+		catch(NumberFormatException nfe)  
+	  	{  
+    		return false;  
+	  	}  
+	  	return true; 
+	}
 
 	// method for checking validity of variable name
 	// returns true
