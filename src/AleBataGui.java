@@ -30,7 +30,7 @@ public class AleBataGui {
 		c.gridwidth = 1;
 		pane.add(jsp1, c);
 	 
-		JTextArea jtf = new JTextField("Ilagay rito ang pangalan ng file mo.");
+		JTextField jtf = new JTextField("Ilagay rito ang pangalan ng file mo.");
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		c.gridx = 0;
 		c.gridy = 10;
