@@ -31,6 +31,7 @@ public class Alebata2 {
 	private static float equation = 0;
 	private static boolean errFlag = false;
 	private static String var;
+	private static String varValue;
 
 	public static void main(String args[]){
 		// a variable for scanning every line of user input
@@ -227,7 +228,7 @@ public class Alebata2 {
 					}
 					variables.put(var, value);
 				}
-				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI")){
+				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER")){
 					Boolean value = null;
 					BaryaBall varType = null;
 					if(token.equals("IDENT")){
@@ -245,7 +246,6 @@ public class Alebata2 {
 					else if(token.equals("MALI")){
 						value = checkTrue("MALI", "");
 					}
-
 					if(value != null){
 						getNextToken();
 						skipSpace();
@@ -307,6 +307,7 @@ public class Alebata2 {
 						//check if number, string
 						if(ball.type.equals("number")){
 							equation = 0;
+							variables.put(var, lexemes.get(index-1));
 							//can't make this work
 							numStart();
 						}
@@ -350,6 +351,7 @@ public class Alebata2 {
 					System.out.println("Invalid syntax for ILABAS MO BEYBEH !");
 					close();
 				}
+				var = lexemes.get(index-1);
 				while(token != null && !token.equals("TERMINATOR")){
 					if(token.equals("PATI")){
 						getNextToken();
@@ -372,12 +374,13 @@ public class Alebata2 {
 						System.out.print(value);
 					}
 					else if(token.equals("IDENT")){
-						if(variables.containsKey(lexemes.get(index-1))){
-							System.out.print(variables.get(lexemes.get(index-1)));
+						if(variables.get(var) != null){
+							System.out.print(variables.get(var));
 						}
 					}
 					getNextToken();
 					skipSpace();
+					var = lexemes.get(index-1);
 				}
 				if(token == null || !token.equals("TERMINATOR")){
 					System.out.println("Missing ! at the end of line");
