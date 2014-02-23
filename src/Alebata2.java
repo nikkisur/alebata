@@ -796,6 +796,10 @@ public class Alebata2 {
 
 	//EQUAL, LESS THAN, GREATER THAN
 	public static void F(int op){
+		if(!token.equals("SA")){
+			System.out.println("Syntax: AY <condition> SA");
+			close();
+		}
 		if(op == 0){
 			System.out.println("AY MAS MALIIT SA");
 			close();
@@ -809,6 +813,7 @@ public class Alebata2 {
 			close();
 		}
 		else if(op == 3){
+			System.out.println(token);
 			System.out.println("AY PANTAY O MAS MALIIT SA");
 			close();
 		}
