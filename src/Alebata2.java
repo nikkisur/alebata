@@ -303,16 +303,13 @@ public class Alebata2 {
 							variables.put(var, "MALI");
 						}
 					}
-					else{
+					else
+					{
 						BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
 
 						//check if number, string
 						if(ball.type.equals("number")){
-							System.out.println("HUeHEU NUM " + ball.getValue() + " " + ball.getName());
 							variables.put(var, ball.getValue());
-							//equation = 0;
-							//can't make this work
-							//numStart();
 						}
 						else if(ball.type.equals("string")){
 							System.out.println("Strings should be placed inside a \"\"");
