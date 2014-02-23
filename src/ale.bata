@@ -2,5 +2,7 @@ GAWA NG isa!
 isa AY 1!
 
 GAWA NG dalawa!
-dalawa AY 1+1!
-dalawa AY 2*3+3!
+dalawa AY 1 + 1!
+
+GAWA NG tatlo!
+tatlo AY dalawa + 1!
