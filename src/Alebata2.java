@@ -225,16 +225,14 @@ public class Alebata2 {
 				}
 				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI")){
 					//					if(token.equals("IDENT")){	
-					String tempVar = "";
 					Boolean value = null;
 					BaryaBall varType = null;
 
 					if(token.equals("IDENT")){
-						tempVar = lexemes.get(index-1);
-						if(variables.get(tempVar) != null){
-							varType = new BaryaBall("", variables.get(tempVar));
+						if(variables.get(var) != null){
+							varType = new BaryaBall("", variables.get(var));
 							if(varType.type.equals("boolean")){
-								value = checkTrue(null, tempVar);
+								value = checkTrue(null, var);
 							}
 						}
 					}
@@ -247,7 +245,8 @@ public class Alebata2 {
 
 					if(value != null){
 						getNextToken();
-						while(!token.equals("TERMINATOR")){
+						skipSpace();
+						while(token != null && !token.equals("TERMINATOR")){
 							if(token.equals("AT")){
 								getNextToken();
 								skipSpace();
@@ -267,14 +266,14 @@ public class Alebata2 {
 
 							}
 						}
-						if(!token.equals("TERMINATOR")){
+						if(token == null || !token.equals("TERMINATOR")){
 							System.out.println("Needs to end in !");
 							close();
 						}
 						if(value)
-							variables.put(tempVar, "TAMA");
+							variables.put(var, "TAMA");
 						else
-							variables.put(tempVar, "MALI");
+							variables.put(var, "MALI");
 					}
 					else{
 						BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
