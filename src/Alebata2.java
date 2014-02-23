@@ -116,7 +116,7 @@ public class Alebata2 {
 		// }
 	}
 
-	//A -> 'GAWA' B | IDENT C | 'ILABAS' D 
+	//A -> 'GAWA' B | IDENT C | 'ILABAS' D | 'HABANG' E
 	public static void A(){
 		while(token != null){
 			if(token.equals("GAWA")){
