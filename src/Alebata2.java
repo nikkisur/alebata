@@ -228,7 +228,7 @@ public class Alebata2 {
 					}
 					variables.put(var, value);
 				}
-				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER")){
+				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || token.equals("HINDI")){
 					Boolean value = null;
 					BaryaBall varType = null;
 					if(token.equals("IDENT")){
@@ -246,6 +246,34 @@ public class Alebata2 {
 					else if(token.equals("MALI")){
 						value = checkTrue("MALI", "");
 					}
+					else if(token.equals("HINDI")){
+						getNextToken();
+						skipSpace();
+						if(token == null){
+							System.out.println("Syntax Error for HINDI");
+							close();
+						}
+						if(token.equals("IDENT")){
+							String tempVar = lexemes.get(index-1);
+							if(variables.get(tempVar) != null){
+								varType = new BaryaBall("", variables.get(tempVar));
+								if(varType.type.equals("boolean")){
+									value = !checkTrue(null, tempVar);
+								}
+							}
+						}
+						else if(token.equals("TAMA")){
+							value = !checkTrue("TAMA", "");
+						}
+						else if(token.equals("MALI")){
+							value = !checkTrue("MALI", "");
+						}
+						else{
+							System.out.println("Can't compare non-boolean types");
+							close();
+						}
+					}
+					
 					if(value != null){
 						getNextToken();
 						skipSpace();
@@ -276,16 +304,99 @@ public class Alebata2 {
 								else if(token.equals("MALI")){
 									value = value && checkTrue("MALI", null);
 								}
+								else if(token.equals("HINDI")){
+									getNextToken();
+									skipSpace();
+									if(token == null){
+										System.out.println("Syntax Error for HINDI");
+										close();
+									}
+									if(token.equals("IDENT")){
+										String tempVar = lexemes.get(index-1);
+										if(variables.get(tempVar) != null){
+											varType = new BaryaBall("", variables.get(tempVar));
+											if(varType.type.equals("boolean")){
+												value = value && !checkTrue(null, tempVar);
+											}
+										}
+									}
+									else if(token.equals("TAMA")){
+										value = value &&!checkTrue("TAMA", "");
+									}
+									else if(token.equals("MALI")){
+										value = value &&!checkTrue("MALI", "");
+									}
+									else{
+										System.out.println("Can't compare non-boolean types");
+										close();
+									}
+								}
 								else{
 									System.out.println("Can't use non-boolean types for AT");
 									close();
 								}
 							}
 							else if(token.equals("O")){
-
+								getNextToken();
+								skipSpace();
+								if(token.equals("IDENT")){
+									String tempVar = lexemes.get(index-1);
+									if(variables.get(tempVar) != null){
+										varType = new BaryaBall("", variables.get(tempVar));
+										if(varType.type.equals("boolean")){
+											value = value || checkTrue(null, tempVar);
+										}
+										else{
+											System.out.println("Can't compare non-boolean types");
+											close();
+										}
+									}
+									else{
+										System.out.println("Declare " + tempVar);
+										close();
+									}
+								}
+								else if(token.equals("TAMA")){
+									value = value || checkTrue("TAMA", null);
+								}
+								else if(token.equals("MALI")){
+									value = value || checkTrue("MALI", null);
+								}
+								else if(token.equals("HINDI")){
+									getNextToken();
+									skipSpace();
+									if(token == null){
+										System.out.println("Syntax Error for HINDI");
+										close();
+									}
+									if(token.equals("IDENT")){
+										String tempVar = lexemes.get(index-1);
+										if(variables.get(tempVar) != null){
+											varType = new BaryaBall("", variables.get(tempVar));
+											if(varType.type.equals("boolean")){
+												value = value || !checkTrue(null, tempVar);
+											}
+										}
+									}
+									else if(token.equals("TAMA")){
+										value = value || !checkTrue("TAMA", "");
+									}
+									else if(token.equals("MALI")){
+										value = value || !checkTrue("MALI", "");
+									}
+									else{
+										System.out.println("Can't compare non-boolean types");
+										close();
+									}
+								}
+								else{
+									System.out.println("Can't use non-boolean types for AT");
+									close();
+								}
 							}
-							else if(token.equals("HINDI")){
-
+							else{
+								System.out.println("Invalid syntax for logical operators");
+								close();
 							}
 							getNextToken();
 							skipSpace();
