@@ -17,7 +17,6 @@ public class BaryaBall {
 		name = n;
 		if(v.length() > 0 && v.charAt(0) == '"'){
 			value = v.substring(1, v.length()-1);
-			type = "string";
 		}
 		else{
 			//iterate through the String in v to check if they're all digits
