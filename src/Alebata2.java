@@ -232,7 +232,7 @@ public class Alebata2 {
 					System.out.println("Syntax error for var AY string: Unclosed \" ");
 					close();
 				}
-				variables.put(var, new BaryaBall(var,stringVal));
+				variables.put(var, new BaryaBall(var,"\"" + stringVal + "\""));
 			}
 			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || hindi){
 				String tempVar = "";
@@ -926,11 +926,12 @@ public class Alebata2 {
 						close();
 					}
 				}
+				System.out.println(!string.equals(varString));
 				return !string.equals(varString);
 
 			}
 			else{
-				System.out.println("Can only compare string for AY PAREHO SA");
+				System.out.println("Can only compare string for AY HINDI PAREHO SA");
 				close();
 			}
 		}
