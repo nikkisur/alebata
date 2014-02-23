@@ -13,7 +13,7 @@ public class Alebata2 {
 	static String number = "0123456789-";
 
 	// a list for storing inputted variable names so they can be checked for validity
-	static HashMap<String, String> variables = new HashMap<String, String>();
+	static HashMap<String, BaryaBall> variables = new HashMap<String, BaryaBall>();
 	static HashMap<String, Integer> arrays = new HashMap<String, Integer>();
 
 	// a variable for storing one inputted line
@@ -232,7 +232,7 @@ public class Alebata2 {
 					System.out.println("Syntax error for var AY string: Unclosed \" ");
 					close();
 				}
-				variables.put(var, stringVal);
+				variables.put(var, new BaryaBall(var,stringVal));
 			}
 			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || hindi){
 				String tempVar = "";
@@ -246,7 +246,7 @@ public class Alebata2 {
 					if(token.equals("IDENT")){
 						tempVar = lexemes.get(index-1);
 						if(variables.get(tempVar) != null){
-							varType = new BaryaBall("", variables.get(tempVar));
+							varType = new BaryaBall("", variables.get(tempVar).getValue());
 							if(varType.type.equals("boolean")){
 								value = !checkTrue(null, tempVar);
 							}
@@ -270,7 +270,7 @@ public class Alebata2 {
 				else if(token.equals("IDENT")){
 					tempVar = lexemes.get(index-1);
 					if(variables.get(tempVar) != null){
-						varType = new BaryaBall("", variables.get(tempVar));
+						varType = new BaryaBall("", variables.get(tempVar).getValue());
 						if(varType.type.equals("boolean")){
 							value = checkTrue(null, tempVar);
 						}
@@ -294,7 +294,7 @@ public class Alebata2 {
 							if(token.equals("IDENT")){
 								tempVar = lexemes.get(index-1);
 								if(variables.get(tempVar) != null){
-									varType = new BaryaBall("", variables.get(tempVar));
+									varType = new BaryaBall("", variables.get(tempVar).getValue());
 									if(varType.type.equals("boolean")){
 										value = value && checkTrue(null, tempVar);
 									}
@@ -324,7 +324,7 @@ public class Alebata2 {
 								if(token.equals("IDENT")){
 									tempVar = lexemes.get(index-1);
 									if(variables.get(tempVar) != null){
-										varType = new BaryaBall("", variables.get(tempVar));
+										varType = new BaryaBall("", variables.get(tempVar).getValue());
 										if(varType.type.equals("boolean")){
 											value = value && !checkTrue(null, tempVar);
 										}
@@ -352,7 +352,7 @@ public class Alebata2 {
 							if(token.equals("IDENT")){
 								tempVar = lexemes.get(index-1);
 								if(variables.get(tempVar) != null){
-									varType = new BaryaBall("", variables.get(tempVar));
+									varType = new BaryaBall("", variables.get(tempVar).getValue());
 									if(varType.type.equals("boolean")){
 										value = value || checkTrue(null, tempVar);
 									}
@@ -382,7 +382,7 @@ public class Alebata2 {
 								if(token.equals("IDENT")){
 									tempVar = lexemes.get(index-1);
 									if(variables.get(tempVar) != null){
-										varType = new BaryaBall("", variables.get(tempVar));
+										varType = new BaryaBall("", variables.get(tempVar).getValue());
 										if(varType.type.equals("boolean")){
 											value = value || !checkTrue(null, tempVar);
 										}
@@ -416,28 +416,28 @@ public class Alebata2 {
 						close();
 					}
 					if(value){
-						variables.put(var, "TAMA");
+						variables.put(var, new BaryaBall(var,"TAMA"));
 					}
 					else{
-						variables.put(var, "MALI");
+						variables.put(var, new BaryaBall(var,"MALI"));
 					}
 				}
 				else //value is not boolean
 				{
 					if(token.equals("NUMBER"))
 					{
-						variables.put(var, numStart());
-						System.out.println("HAHA " + var + " " + variables.get(var));
+						variables.put(var, new BaryaBall(var,numStart()));
+						System.out.println("HAHA " + var + " " + variables.get(var).getValue());
 					}
 					else if(token.equals("IDENT"))
 					{
-						String temp = variables.get(lexemes.get(index-1));
+						String temp = variables.get(lexemes.get(index-1)).getValue();
 						if(temp != null) //existing variable
 						{
 							if(isNumeric(temp)) //variable is num
 							{
-								variables.put(var, numStart());
-								System.out.println("HAHA " + var + " " + variables.get(var));
+								variables.put(var, new BaryaBall(var,numStart()));
+								System.out.println("HAHA " + var + " " + variables.get(var).getValue());
 							}
 							else
 							{
@@ -589,7 +589,7 @@ public class Alebata2 {
 		}	
 		else if(token.equals("IDENT"))
 		{
-			x = Double.parseDouble(variables.get(lexemes.get(index-1)));
+			x = Double.parseDouble(variables.get(lexemes.get(index-1)).getValue());
 			getNextToken();
 			skipSpace();
 		}
@@ -654,7 +654,7 @@ public class Alebata2 {
 					}
 					else if(token.equals("IDENT")){
 						if(variables.get(var) != null){
-							System.out.print(variables.get(var));
+							System.out.print(variables.get(var).getValue());
 						}
 					}
 					getNextToken();
@@ -805,7 +805,7 @@ public class Alebata2 {
 		}
 		getNextToken();
 		skipSpace();
-		BaryaBall varType = new BaryaBall("", variables.get(var));
+		BaryaBall varType = new BaryaBall("", variables.get(var).getValue());
 		if(token == null || token.equals("TERMINATOR")){
 			System.out.println("Syntax: AY <condition> SA ! is invalid");
 			close();
@@ -832,12 +832,12 @@ public class Alebata2 {
 				float num;
 				float varNum = Float.parseFloat(varType.value);
 				if(token.equals("IDENT")){
-					if(variables.get(lexemes.get(index-1)) == null){
+					if(variables.get(lexemes.get(index-1)).getValue() == null){
 						System.out.println("Declare " + lexemes.get(index-1));
 						close();
 					}
 
-					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)).getValue());
 					if(!compareVar.type.equals("number")){
 						System.out.println("Can't compare non-number types");
 						close();
@@ -866,12 +866,12 @@ public class Alebata2 {
 				float num;
 				float varNum = Float.parseFloat(varType.value);
 				if(token.equals("IDENT")){
-					if(variables.get(lexemes.get(index-1)) == null){
+					if(variables.get(lexemes.get(index-1)).getValue() == null){
 						System.out.println("Declare " + lexemes.get(index-1));
 						close();
 					}
 
-					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)).getValue());
 					if(!compareVar.type.equals("number")){
 						System.out.println("Can't compare non-number types");
 						close();
@@ -952,12 +952,12 @@ public class Alebata2 {
 						close();
 					}
 
-					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)).getValue());
 					if(!compareVar.type.equals("string")){
 						System.out.println("Can't compare non-string types");
 						close();
 					}
-					string = variables.get(lexemes.get(index-1));
+					string = variables.get(lexemes.get(index-1)).getValue();
 				}
 				else{
 					getNextToken();
@@ -1043,7 +1043,7 @@ public class Alebata2 {
 										createArray(temp, num);
 									}
 									else{
-										variables.put(temp, "");
+										variables.put(temp, new BaryaBall(temp,""));
 									}
 									//																		System.out.println("	Gumawa ka ng variable na ang pangalan ay " + temp + ".");
 								}
@@ -1072,9 +1072,9 @@ public class Alebata2 {
 			}
 		}
 		else{
-			if(variables.get(var).equals("TAMA"))
+			if(variables.get(var).getValue().equals("TAMA"))
 				return true;
-			else if(variables.get(var).equals("MALI"))
+			else if(variables.get(var).getValue().equals("MALI"))
 				return false;
 			else{
 				System.out.println(var + " is not a Boolean");
@@ -1086,7 +1086,8 @@ public class Alebata2 {
 
 	public static void createArray(String name, int num){
 		for(int a = 1; a < num+1; a++){
-			variables.put(name + "#" + a, "");
+			String tempvarname = name + "#" + a;
+			variables.put(tempvarname, new BaryaBall(tempvarname,""));
 		}
 		arrays.put(name, num);
 	}
