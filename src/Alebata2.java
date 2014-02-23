@@ -56,16 +56,16 @@ public class Alebata2 {
 		while(scan.hasNext()){
 			String line = scan.nextLine();
 			lineNum++;
-			String[] words = line.split("(?<=[ \\!\"()*/%^+-])|(?=[ \\!\"()*/%^+-])| ");
+			String[] words = line.split("(?<=[ 	\\!\"()*/%^+-])|(?=[ 	\\!\"()*/%^+-])| ");
 			String value = "";
 
 			System.out.println("---line: " + line);
 			if(!line.isEmpty()) //current line in program should not be empty
 			{
-				if(line.charAt(line.length()-1) != '!'){
-					System.out.println("Error at line#" + lineNum + ": should end with ! ");
-					close();
-				}
+				//				if(line.charAt(line.length()-1) != '!'){
+				//					System.out.println("Error at line#" + lineNum + ": should end with ! ");
+				//					close();
+				//				}
 				for(String word: words){
 					if(reservedWords.get(word) != null){
 						tokens.add(reservedWords.get(word));
@@ -78,7 +78,7 @@ public class Alebata2 {
 							{
 								tokens.add("NUMBER");
 							}	
-							else if(word.equals(" ")){
+							else if(word.equals(" ") || word.equals("	")){
 								tokens.add("SPACE");
 							}
 							else {
@@ -119,56 +119,61 @@ public class Alebata2 {
 	//A -> 'GAWA' B | IDENT E | 'ILABAS' D | 'KUNG' Z
 	public static void A(){
 		while(token != null){
-			if(token.equals("GAWA")){
-				getNextToken();
-				skipSpace();
-
-				if(token == null){
-					System.out.println("Invalid syntax for GAWA");
-					close();
-				}
-				B();
-			}
-			else if(token.equals("IDENT")){
-				var = lexemes.get(index-1);
-				getNextToken();
-				skipSpace();
-				if(token == null){
-					System.out.println("Invalid syntax");
-					close();
-				}
-				else if(token.equals("AY")){
-					E();
-				}
-				else{
-					System.out.println("Invalid syntax: var AY ");
-					close();
-				}
-			}
-			else if(token.equals("ILABAS")){
-				getNextToken();
-				skipSpace();
-				if(token == null){
-					System.out.println("Invalid syntax for ILABAS");
-					close();
-				}
-				D();
-			}
-			else if(token.equals("KUNG"))
-			{
-				getNextToken();
-				skipSpace();
-				if(token == null)
-				{
-					System.out.println("Invalid syntax for KUNG");
-					close();
-				}
-				Z();
-			}
-			getNextToken();
+			callMe();
 		}
 	}
 
+	public static void callMe(){
+		if(token.equals("GAWA")){
+			getNextToken();
+			skipSpace();
+
+			if(token == null){
+				System.out.println("Invalid syntax for GAWA");
+				close();
+			}
+			B();
+		}
+		else if(token.equals("IDENT")){
+			var = lexemes.get(index-1);
+			getNextToken();
+			skipSpace();
+			System.out.println(token);
+			if(token == null){
+				System.out.println("Invalid syntax");
+				close();
+			}
+			else if(token.equals("AY")){
+				E();
+			}
+			else{
+				System.out.println("Invalid syntax: var AY ");
+				close();
+			}
+		}
+		else if(token.equals("ILABAS")){
+			getNextToken();
+			skipSpace();
+			if(token == null){
+				System.out.println("Invalid syntax for ILABAS");
+				close();
+			}
+			D();
+		}
+		else if(token.equals("KUNG"))
+		{
+			getNextToken();
+			skipSpace();
+			if(token == null)
+			{
+				System.out.println("Invalid syntax for KUNG");
+				close();
+			}
+			Z();
+		}
+		getNextToken();
+		skipSpace();
+	}
 	//B -> 'NG' IDENT -- var declarations
 	public static void B(){
 		if(token != null){
@@ -648,6 +653,7 @@ public class Alebata2 {
 					if(token.equals("PATI")){
 						getNextToken();
 						skipSpace();
+						var = lexemes.get(index-1);
 						if(token == null || token.equals("TERMINATOR")){
 							System.out.println("1Invalid syntax for ILABAS MO BEYBEH");
 							close();
@@ -663,12 +669,16 @@ public class Alebata2 {
 								getNextToken();
 							}
 						}
-						System.out.print(value);
+						//						System.out.print(value);
 					}
 					else if(token.equals("IDENT")){
 						if(variables.get(var) != null){
-							System.out.print(variables.get(var).getValue());
+							value += variables.get(var).getValue();
 						}
+					}
+					else{
+						System.out.println("Syntax error for ILABAS MO BEYBEH");
+						close();
 					}
 					getNextToken();
 					skipSpace();
@@ -678,6 +688,7 @@ public class Alebata2 {
 					System.out.println("Missing ! at the end of line");
 					close();
 				}
+				System.out.println(value);
 			}
 			else{
 				System.out.println("Syntax error: ILABAS MO BEYBEH <value>");
@@ -688,7 +699,6 @@ public class Alebata2 {
 			System.out.println("Syntax error: ILABAS MO BEYBEH <value>");
 			close();
 		}
-		System.out.println();
 	}
 
 	//check what kind of AY
@@ -906,6 +916,7 @@ public class Alebata2 {
 			{
 				String word1 = varType.getValue();
 				String word2 = string;
+				System.out.println(word1 + "     " + word2);
 				System.out.println(!word1.equals(word2));
 				return !word1.equals(word2);
 			}
@@ -962,15 +973,20 @@ public class Alebata2 {
 				{
 					if(E())
 					{
+						System.out.println("here");
 						getNextToken();
 						skipSpace();
 						gawin();
 					}
 					else
 					{
-						getNextToken();
-						skipSpace();
-						pero();
+						while(!token.equals("PERO")){
+							getNextToken();
+							skipSpace();
+							if(token == null)
+								close();
+						}
+							pero();
 					}
 				}
 				else
@@ -994,8 +1010,6 @@ public class Alebata2 {
 
 	public static void gawin()
 	{
-		System.out.println("GAWIN");
-		/*
 		if(token.equals("GAWIN"))
 		{
 			getNextToken();
@@ -1006,29 +1020,70 @@ public class Alebata2 {
 				skipSpace();
 				while(!token.equals("TAMA"))
 				{
-					System.out.println("PASOK!");
+					callMe();
+					if(token.equals("TAMA"))
+						break;
 					getNextToken();
 					skipSpace();
-					//A();
+					if(token == null){
+						System.out.println("Syntax error");
+						close();
+					}
 				}
 				getNextToken();
 				skipSpace();
-				if(token.equals("NA"))
+				if(!token.equals("NA"))
 				{
+					System.out.println("No NA, gawin");
+					close();				
+				}
+				else{
 					getNextToken();
 					skipSpace();
-					if(token.equals("TERMINATOR"))
-					{
-						getNextToken();
-						skipSpace();
-						A();	
+					if(token == null){
+						System.out.println("Needs !");
+						close();
+					}
+					if(!token.equals("TERMINATOR")){
+						System.out.println("Syntax error: missing !");
+						close();
 					}
 				}
-				else
-				{
-					System.out.println("Error");
+				getNextToken();
+				skipSpace();
+				if(token == null){
 					close();
 				}
+				while(true){
+					if(token == null){
+						System.out.println("Syntax error");
+						close();
+					}
+					if(token.equals("TAMA")){
+						getNextToken();
+						skipSpace();
+						if(token.equals("NA")){
+							getNextToken();
+							skipSpace();
+							if(token == null){
+								System.out.println("Syntax error ");
+								close();
+							}
+							if(token.equals("TERMINATOR")){
+								getNextToken();
+								skipSpace();
+								break;
+							}
+						}
+					}
+					getNextToken();
+					skipSpace();
+				}
+			}
+			else
+			{
+				System.out.println("Syntax: GAWIN ITO");
+				close();
 			}
 		}
 		else
@@ -1036,20 +1091,48 @@ public class Alebata2 {
 			System.out.println("Error: Expected GAWIN");
 			close();
 		}
-		*/
 	}
 
 	public static void pero()
 	{
-		System.out.println("PERO");
-		close();
+		if(token.equals("PERO"))
+		{
+			getNextToken();
+			skipSpace();
+			if(token.equals("KUNG"))
+			{
+				getNextToken();
+				skipSpace();
+				if(token.equals("HINDI"))
+				{
+					getNextToken();
+					skipSpace();
+					gawin();
+				}
+				else
+				{
+					System.out.println("Expected: PERO KUNG HINDI");
+					close();
+				}
+			}
+			else
+			{
+				System.out.println("Expected: PERO KUNG");
+				close();
+			}
+		}
+		else
+		{
+			System.out.println("Error: Expected PERO");
+			close();
+		}
 	}
 
 	/*
 
 	TOOLS START HERE
 
-	*/
+	 */
 
 	//method that compares nums for conditionals
 	public static String canCompare(String t, int i, String cond, BaryaBall v)
@@ -1083,7 +1166,7 @@ public class Alebata2 {
 		}	
 		return "";
 	}
-	
+
 	//method that compares strings for conditionals
 	public static String stringCompare(String t, int i, String cond, BaryaBall v){
 		if(t.equals("DQUOTE") || t.equals("IDENT")){
@@ -1098,7 +1181,7 @@ public class Alebata2 {
 					close();
 				}
 
-				BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(i-1)).getValue());
+				BaryaBall compareVar = variables.get(lexemes.get(i-1));
 				if(!compareVar.type.equals("string")){
 					System.out.println("Can't compare non-string types");
 					close();
@@ -1109,20 +1192,20 @@ public class Alebata2 {
 				getNextToken();
 				string = "";
 				while(token != null && !token.equals("DQUOTE")){
-
-					string += lexemes.get(i-1);
 					getNextToken();
-					if(token != null && token.equals("DQUOTE") && string.charAt(string.length()-1) == '\\'){
+					if(token != null && token.equals("DQUOTE") && (string.length() > 0 && string.charAt(string.length()-1) == '\\')){
 						string = string.substring(0, string.length()-1) + "\"";
 						getNextToken();
+					}
+					else{
+						string += lexemes.get(index-1);
 					}
 				}
 				return string;
 			}
-
 		}
 		else{
-			System.out.println("Can only compare string for AY PAREHO SA");
+			System.out.println("Can only compare string for AY "+cond);
 			close();
 		}
 		return "";
