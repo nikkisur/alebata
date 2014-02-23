@@ -116,7 +116,7 @@ public class Alebata2 {
 		// }
 	}
 
-	//A -> 'GAWA' B | IDENT E | 'ILABAS' D 
+	//A -> 'GAWA' B | IDENT E | 'ILABAS' D | 'KUNG' Z
 	public static void A(){
 		while(token != null){
 			if(token.equals("GAWA")){
@@ -125,6 +125,7 @@ public class Alebata2 {
 
 				if(token == null){
 					System.out.println("Invalid syntax for GAWA");
+					close();
 				}
 				B();
 			}
@@ -134,6 +135,7 @@ public class Alebata2 {
 				skipSpace();
 				if(token == null){
 					System.out.println("Invalid syntax");
+					close();
 				}
 				else if(token.equals("AY")){
 					E();
@@ -148,8 +150,20 @@ public class Alebata2 {
 				skipSpace();
 				if(token == null){
 					System.out.println("Invalid syntax for ILABAS");
+					close();
 				}
 				D();
+			}
+			else if(token.equals("KUNG"))
+			{
+				getNextToken();
+				skipSpace();
+				if(token == null)
+				{
+					System.out.println("Invalid syntax for KUNG");
+					close();
+				}
+				Z();
 			}
 			getNextToken();
 		}
@@ -678,7 +692,8 @@ public class Alebata2 {
 	}
 
 	//check what kind of AY
-	public static void E(){
+	public static Boolean E(){
+		Boolean res = false;
 		getNextToken();
 		skipSpace();
 		if(token.equals("MAS")){
@@ -697,10 +712,10 @@ public class Alebata2 {
 					close();
 				}
 				if(lessthan.equals("MALIIT")){
-					F(0);
+					res = F(0);
 				}
 				else{
-					F(1);
+					res = F(1);
 				}
 
 			}
@@ -716,7 +731,7 @@ public class Alebata2 {
 				if(token.equals("SA")){
 					getNextToken();
 					skipSpace();
-					F(2);
+					res = F(2);
 				}
 				else if(token.equals("O")){
 					getNextToken();
@@ -741,10 +756,10 @@ public class Alebata2 {
 								close();
 							}
 							if(lessthan.equals("MALIIT")){
-								F(3);
+								res = F(3);
 							}
 							else{
-								F(4);
+								res = F(4);
 							}
 
 						}
@@ -768,12 +783,12 @@ public class Alebata2 {
 					if(token.equals("PAREHO")){
 						getNextToken();
 						skipSpace();
-						F(5);
+						res = F(5);
 					}
 					else if(token.equals("PANTAY")){
 						getNextToken();
 						skipSpace();
-						F(6);
+						res = F(6);
 					}
 					else{
 						C(true);
@@ -785,7 +800,7 @@ public class Alebata2 {
 			else{
 				getNextToken();
 				skipSpace();
-				F(7);
+				res = F(7);
 			}
 
 		}
@@ -793,7 +808,7 @@ public class Alebata2 {
 			C(false);
 			var = "";
 		}
-
+		return res;
 	}
 
 	//EQUAL, LESS THAN, GREATER THAN
@@ -932,6 +947,109 @@ public class Alebata2 {
 		}
 		return true;
 	}
+
+	//kung statement
+	public static void Z()
+	{
+		if(token.equals("IDENT"))
+		{
+			var = lexemes.get(index-1);
+			if(variables.get(var) != null || variables.get(var).getValue() != null) //variable exists
+			{
+				getNextToken();
+				skipSpace();
+				if(token.equals("AY"))
+				{
+					if(E())
+					{
+						getNextToken();
+						skipSpace();
+						gawin();
+					}
+					else
+					{
+						getNextToken();
+						skipSpace();
+						pero();
+					}
+				}
+				else
+				{
+					System.out.println("Syntax: KUNG AY <condition> GAWIN ITO <stmt> TAMA NA!");
+					close();
+				}	
+			}		
+			else
+			{
+				System.out.println("Error: Variable " + var + " does not exist or has not been initialized.");
+				close();
+			}
+		}
+		else
+		{
+			System.out.println("Error: Expecting variable after KUNG");
+			close();
+		}
+	}
+
+	public static void gawin()
+	{
+		System.out.println("GAWIN");
+		/*
+		if(token.equals("GAWIN"))
+		{
+			getNextToken();
+			skipSpace();
+			if(token.equals("ITO"))
+			{
+				getNextToken();
+				skipSpace();
+				while(!token.equals("TAMA"))
+				{
+					System.out.println("PASOK!");
+					getNextToken();
+					skipSpace();
+					//A();
+				}
+				getNextToken();
+				skipSpace();
+				if(token.equals("NA"))
+				{
+					getNextToken();
+					skipSpace();
+					if(token.equals("TERMINATOR"))
+					{
+						getNextToken();
+						skipSpace();
+						A();	
+					}
+				}
+				else
+				{
+					System.out.println("Error");
+					close();
+				}
+			}
+		}
+		else
+		{
+			System.out.println("Error: Expected GAWIN");
+			close();
+		}
+		*/
+	}
+
+	public static void pero()
+	{
+		System.out.println("PERO");
+		close();
+	}
+
+	/*
+
+	TOOLS START HERE
+
+	*/
 
 	//method that compares nums for conditionals
 	public static String canCompare(String t, int i, String cond, BaryaBall v)
