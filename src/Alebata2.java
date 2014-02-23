@@ -900,12 +900,11 @@ public class Alebata2 {
 		}
 		else{
 			if(token.equals("DQUOTE") || token.equals("IDENT")){
-				System.out.println(varType.type);
 				if(!varType.type.equals("string")){
 					System.out.println("Can only compare strings for AY PAREHO SA");
 					close();
 				}
-				String string;
+				String string = "";
 				String varString = varType.value;
 				if(token.equals("IDENT")){
 					if(variables.get(lexemes.get(index-1)) == null){
@@ -921,7 +920,20 @@ public class Alebata2 {
 					string = variables.get(lexemes.get(index-1));
 				}
 				else{
-					string = lexemes.get(index-1);
+					getNextToken();
+					String stringVal = "";
+					while(token != null && !token.equals("DQUOTE")){
+						stringVal += lexemes.get(index-1);
+						getNextToken();
+						if(token != null && token.equals("DQUOTE") && stringVal.charAt(stringVal.length()-1) == '\\'){
+							string = stringVal.substring(0, stringVal.length()-1) + "\"";
+							getNextToken();
+						}
+					}
+					if(token == null){
+						System.out.println("Syntax error for var AY string: Unclosed \" ");
+						close();
+					}
 				}
 				return string.equals(varString);
 
@@ -930,7 +942,6 @@ public class Alebata2 {
 				System.out.println("Can only compare string for AY PAREHO SA");
 				close();
 			}
-			close();
 		}
 		return true;
 	}
