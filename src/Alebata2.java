@@ -116,7 +116,7 @@ public class Alebata2 {
 		// }
 	}
 
-	//A -> 'GAWA' B | IDENT C | 'ILABAS' D | 'HABANG' E
+	//A -> 'GAWA' B | IDENT C | 'ILABAS' D 
 	public static void A(){
 		while(token != null){
 			if(token.equals("GAWA")){
@@ -217,27 +217,28 @@ public class Alebata2 {
 	//C -> 'AY'
 	public static void C(Boolean hindi){
 		if(variables.get(var) != null){
-			skipSpace();
-			if(token.equals("DQUOTE")){
+			String tempVar = "";
+			Boolean value = null;
+			BaryaBall varType = null;
+			if(!hindi && token.equals("DQUOTE")){
 				getNextToken();
-				String value = "";
-				while(!token.equals("DQUOTE")){
-					value += lexemes.get(index-1);
+				String stringVal = "";
+				while(token != null && !token.equals("DQUOTE")){
+					stringVal += lexemes.get(index-1);
 					getNextToken();
-					if(token != null && token.equals("DQUOTE") && value.charAt(value.length()-1) == '\\'){
-						value = value.substring(0, value.length()-1) + "\"";
+					if(token != null && token.equals("DQUOTE") && stringVal.charAt(stringVal.length()-1) == '\\'){
+						stringVal = stringVal.substring(0, stringVal.length()-1) + "\"";
 						getNextToken();
 					}
 				}
-				variables.put(var, value);
+				if(token == null){
+					System.out.println("Syntax error for var AY string: Unclosed \" ");
+					close();
+				}
+				variables.put(var, stringVal);
 			}
-			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || hindi){
-				String tempVar = "";
-				Boolean value = null;
-				BaryaBall varType = null;
+			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER")){
 				if(hindi){
-					getNextToken();
-					skipSpace();
 					if(token == null){
 						System.out.println("Syntax Error for HINDI");
 						close();
@@ -249,6 +250,10 @@ public class Alebata2 {
 							if(varType.type.equals("boolean")){
 								value = !checkTrue(null, tempVar);
 							}
+						}
+						else{
+							System.out.println("Declare variable: " + lexemes.get(index-1));
+							close();
 						}
 					}
 					else if(token.equals("TAMA")){
@@ -277,6 +282,7 @@ public class Alebata2 {
 				else if(token.equals("MALI")){
 					value = checkTrue("MALI", "");
 				}
+				
 				
 				if(value != null){
 					getNextToken();
@@ -475,8 +481,8 @@ public class Alebata2 {
 	/*
 
 	MATH STUFF STARTS HERE
-	
-	*/
+
+	 */
 	public static String numStart(){
 		String ans = "" + addSubtract();
 		if( token.equals("TERMINATOR") && !errFlag )
@@ -596,9 +602,9 @@ public class Alebata2 {
 
 	MATH STUFF ENDS HERE
 
-	*/
-	
-	
+	 */
+
+
 	//PRINT
 	public static void D(){
 		String value = "";
@@ -761,7 +767,7 @@ public class Alebata2 {
 						var = "";
 					}
 				}
-				
+
 			}
 			else{
 				skipSpace();
@@ -812,7 +818,7 @@ public class Alebata2 {
 		}
 	}
 	//--------------------------------------------------
-	
+
 	//method checks if string is numeric
 	public static boolean isNumeric(String str)
 	{
