@@ -217,9 +217,6 @@ public class Alebata2 {
 	//C -> 'AY'
 	public static void C(Boolean hindi){
 		if(variables.get(var) != null){
-			String tempVar = "";
-			Boolean value = null;
-			BaryaBall varType = null;
 			if(!hindi && token.equals("DQUOTE")){
 				getNextToken();
 				String stringVal = "";
@@ -237,7 +234,10 @@ public class Alebata2 {
 				}
 				variables.put(var, stringVal);
 			}
-			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER")){
+			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || hindi){
+				String tempVar = "";
+				Boolean value = null;
+				BaryaBall varType = null;
 				if(hindi){
 					if(token == null){
 						System.out.println("Syntax Error for HINDI");
@@ -507,11 +507,13 @@ public class Alebata2 {
 			if(token.equals("PLUS"))
 			{
 				getNextToken();
+				skipSpace();
 				x += multDivideMod();
 			}
 			else
 			{
 				getNextToken();
+				skipSpace();
 				x -= multDivideMod();
 			}
 		}
@@ -527,16 +529,19 @@ public class Alebata2 {
 			if(token.equals("MULT"))
 			{
 				getNextToken();
+				skipSpace();
 				x *= exp();
 			}
 			else if(token.equals("DIVIDE"))
 			{
 				getNextToken();
+				skipSpace();
 				x = x / exp();
 			}
 			else if(token.equals("MODULO"))
 			{
 				getNextToken();
+				skipSpace();
 				x = x % exp();
 			}
 		}
@@ -550,6 +555,7 @@ public class Alebata2 {
 		if(token.equals("EXP"))
 		{
 			getNextToken();
+			skipSpace();
 			x = Math.pow(x, unary());
 		}
 		else
@@ -563,6 +569,7 @@ public class Alebata2 {
 		if(token.equals("MINUS"))
 		{
 			getNextToken();
+			skipSpace();
 			x *= balyu();
 		}
 		else
@@ -578,19 +585,23 @@ public class Alebata2 {
 		{
 			x = Double.parseDouble(lexemes.get(index-1));
 			getNextToken();
+			skipSpace();
 		}	
 		else if(token.equals("IDENT"))
 		{
 			x = Double.parseDouble(variables.get(lexemes.get(index-1)));
 			getNextToken();
+			skipSpace();
 		}
 		else if(token.equals("LPAREN"))
 		{
 			getNextToken();
+			skipSpace();
 			x = addSubtract();
 			if(token.equals("RPAREN"))
 			{
 				getNextToken();
+				skipSpace();
 			}
 			else
 				System.out.println("ERROR P");
