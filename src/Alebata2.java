@@ -116,7 +116,7 @@ public class Alebata2 {
 		// }
 	}
 
-	//A -> 'GAWA' B | IDENT C | 'ILABAS' D 
+	//A -> 'GAWA' B | IDENT E | 'ILABAS' D 
 	public static void A(){
 		while(token != null){
 			if(token.equals("GAWA")){
@@ -812,53 +812,79 @@ public class Alebata2 {
 		}
 
 		if(op == 0){
-			System.out.println("AY MAS MALIIT SA");
+			String num = canCompare(token,index,"AY MAS MALIIT SA",varType); 
+			if(!num.isEmpty())
+			{
+				float num1 = Float.parseFloat(varType.getValue());
+				float num2 = Float.parseFloat(num);
+				System.out.println(num1 < num2);
+				return num1 < num2;
+			}
+			else
+			{
+				System.out.println("Error: Cant compare");
+			}
 			close();
 		}
 		else if(op == 1){
-			System.out.println("AY MAS MALAKI SA");
+			String num = canCompare(token,index,"AY MAS MALAKI SA",varType); 
+			if(!num.isEmpty())
+			{
+				float num1 = Float.parseFloat(varType.getValue());
+				float num2 = Float.parseFloat(num);
+				System.out.println(num1 > num2);
+				return num1 > num2;
+			}
+			else
+			{
+				System.out.println("Error: Cant compare");
+			}
 			close();
 		}
 		else if(op == 2){
-			System.out.println("AY PANTAY SA");
+			String num = canCompare(token,index,"AY PANTAY SA",varType); 
+			if(!num.isEmpty())
+			{
+				float num1 = Float.parseFloat(varType.getValue());
+				float num2 = Float.parseFloat(num);
+				System.out.println(num1 == num2);
+				return num1 == num2;
+			}
+			else
+			{
+				System.out.println("Error: Cant compare");
+			}
 			close();
 		}
 		else if(op == 3){
-			if(token.equals("NUMBER") || token.equals("IDENT")){
-				if(!varType.type.equals("number")){
-					System.out.println("Can only compare numbers for AY PANTAY O MAS MALIIT SA");
-					close();
-				}
-				float num;
-				float varNum = Float.parseFloat(varType.value);
-				if(token.equals("IDENT")){
-					if(variables.get(lexemes.get(index-1)).getValue() == null){
-						System.out.println("Declare " + lexemes.get(index-1));
-						close();
-					}
-
-					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)).getValue());
-					if(!compareVar.type.equals("number")){
-						System.out.println("Can't compare non-number types");
-						close();
-					}
-					num = Float.parseFloat(compareVar.value);
-				}
-				else{
-					num = Float.parseFloat(lexemes.get(index-1));
-				}
-				
-				return varNum <= num;
-
+			String num = canCompare(token,index,"AY PANTAY O MAS MALIIT SA",varType); 
+			if(!num.isEmpty())
+			{
+				float num1 = Float.parseFloat(varType.getValue());
+				float num2 = Float.parseFloat(num);
+				System.out.println(num1 <= num2);
+				return num1 <= num2;
 			}
-			else{
-				System.out.println("Can only compare numbers for AY PANTAY O MAS MALIIT SA");
-				close();
+			else
+			{
+				System.out.println("Error: Cant compare");
 			}
 			close();
 		}
 		else if(op == 4){
-			if(token.equals("NUMBER") || token.equals("IDENT")){
+			String num = canCompare(token,index,"AY PANTAY O MAS MALAKI SA",varType); 
+			if(!num.isEmpty())
+			{
+				float num1 = Float.parseFloat(varType.getValue());
+				float num2 = Float.parseFloat(num);
+				System.out.println(num1 >= num2);
+				return num1 >= num2;
+			}
+			else
+			{
+				System.out.println("Error: Cant compare");
+			}
+			/*if(token.equals("NUMBER") || token.equals("IDENT")){
 				if(!varType.type.equals("number")){
 					System.out.println("Can only compare numbers for AY PANTAY O MAS MALAKI SA");
 					close();
@@ -887,65 +913,36 @@ public class Alebata2 {
 			else{
 				System.out.println("Can only compare numbers for AY PANTAY O MAS MALAKI SA");
 				close();
-			}
+			}*/
 			close();
 		}
 		else if(op == 5){
-			if(token.equals("DQUOTE") || token.equals("IDENT")){
-				if(!varType.type.equals("string")){
-					System.out.println("Can only compare strings for AY HINDI PAREHO SA");
-					close();
-				}
-				String string = "";
-				String varString = varType.value;
-				if(token.equals("IDENT")){
-					if(variables.get(lexemes.get(index-1)) == null){
-						System.out.println("Declare " +lexemes.get(index-1));
-						close();
-					}
-
-					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)).getValue());
-					if(!compareVar.type.equals("string")){
-						System.out.println("Can't compare non-string types");
-						close();
-					}
-					string = variables.get(lexemes.get(index-1)).getValue();
-				}
-				else{
-					getNextToken();
-					while(token != null && !token.equals("DQUOTE")){
-						string += lexemes.get(index-1);
-						getNextToken();
-						if(token != null && token.equals("DQUOTE") && string.charAt(string.length()-1) == '\\'){
-							string = string.substring(0, string.length()-1) + "\"";
-							getNextToken();
-						}
-					}
-					if(token == null){
-						System.out.println("Syntax error for var AY string: Unclosed \" ");
-						close();
-					}
-				}
-				System.out.println(!string.equals(varString));
-				return !string.equals(varString);
-
-			}
-			else{
-				System.out.println("Can only compare string for AY HINDI PAREHO SA");
-				close();
-			}
+			System.out.println("AY HINDI PAREHO SA");
+			close();
 		}
 		else if(op == 6){
-			System.out.println("AY HINDI PANTAY SA");
+			String num = canCompare(token,index,"AY HINDI PANTAY SA",varType); 
+			if(!num.isEmpty())
+			{
+				float num1 = Float.parseFloat(varType.getValue());
+				float num2 = Float.parseFloat(num);
+				System.out.println(num1 != num2);
+				return num1 != num2;
+			}
+			else
+			{
+				System.out.println("Error: Cant compare");
+			}	
 			close();
 		}
 		else{
 			if(token.equals("DQUOTE") || token.equals("IDENT")){
+				System.out.println(varType.type);
 				if(!varType.type.equals("string")){
-					System.out.println("Can only compare strings for AY HINDI PAREHO SA");
+					System.out.println("Can only compare strings for AY PAREHO SA");
 					close();
 				}
-				String string = "";
+				String string;
 				String varString = varType.value;
 				if(token.equals("IDENT")){
 					if(variables.get(lexemes.get(index-1)) == null){
@@ -961,19 +958,7 @@ public class Alebata2 {
 					string = variables.get(lexemes.get(index-1)).getValue();
 				}
 				else{
-					getNextToken();
-					while(token != null && !token.equals("DQUOTE")){
-						string += lexemes.get(index-1);
-						getNextToken();
-						if(token != null && token.equals("DQUOTE") && string.charAt(string.length()-1) == '\\'){
-							string = string.substring(0, string.length()-1) + "\"";
-							getNextToken();
-						}
-					}
-					if(token == null){
-						System.out.println("Syntax error for var AY string: Unclosed \" ");
-						close();
-					}
+					string = lexemes.get(index-1);
 				}
 				return string.equals(varString);
 
@@ -982,8 +967,42 @@ public class Alebata2 {
 				System.out.println("Can only compare string for AY PAREHO SA");
 				close();
 			}
+			close();
 		}
 		return true;
+	}
+
+	//method that compares nums for conditionals
+	public static String canCompare(String t, int i, String cond, BaryaBall v)
+	{
+		if(t.equals("NUMBER") || t.equals("IDENT")){
+			if(!v.getType().equals("number")){
+				System.out.println("Can only compare numbers for " + cond);
+				close();
+			}
+			if(t.equals("IDENT")){
+				if(variables.get(lexemes.get(i-1)).getValue() == null){
+					System.out.println("Declare " + lexemes.get(i-1));
+					close();
+				}
+
+				BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(i-1)).getValue());
+				if(!compareVar.getType().equals("number")){
+					System.out.println("Can't compare non-number types");
+					close();
+				}
+				return compareVar.getValue();
+			}
+			else
+			{
+				return lexemes.get(index-1);
+			}
+		}
+		else{
+			System.out.println("Can only compare numbers for " + cond);
+			close();
+		}	
+		return "";
 	}
 	//--------------------------------------------------
 
