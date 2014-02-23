@@ -229,10 +229,11 @@ public class Alebata2 {
 					variables.put(var, value);
 				}
 				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || token.equals("HINDI")){
+					String tempVar = "";
 					Boolean value = null;
 					BaryaBall varType = null;
 					if(token.equals("IDENT")){
-						String tempVar = lexemes.get(index-1);
+						tempVar = lexemes.get(index-1);
 						if(variables.get(tempVar) != null){
 							varType = new BaryaBall("", variables.get(tempVar));
 							if(varType.type.equals("boolean")){
@@ -254,7 +255,7 @@ public class Alebata2 {
 							close();
 						}
 						if(token.equals("IDENT")){
-							String tempVar = lexemes.get(index-1);
+							tempVar = lexemes.get(index-1);
 							if(variables.get(tempVar) != null){
 								varType = new BaryaBall("", variables.get(tempVar));
 								if(varType.type.equals("boolean")){
@@ -282,7 +283,7 @@ public class Alebata2 {
 								getNextToken();
 								skipSpace();
 								if(token.equals("IDENT")){
-									String tempVar = lexemes.get(index-1);
+									tempVar = lexemes.get(index-1);
 									if(variables.get(tempVar) != null){
 										varType = new BaryaBall("", variables.get(tempVar));
 										if(varType.type.equals("boolean")){
@@ -312,7 +313,7 @@ public class Alebata2 {
 										close();
 									}
 									if(token.equals("IDENT")){
-										String tempVar = lexemes.get(index-1);
+										tempVar = lexemes.get(index-1);
 										if(variables.get(tempVar) != null){
 											varType = new BaryaBall("", variables.get(tempVar));
 											if(varType.type.equals("boolean")){
@@ -340,7 +341,7 @@ public class Alebata2 {
 								getNextToken();
 								skipSpace();
 								if(token.equals("IDENT")){
-									String tempVar = lexemes.get(index-1);
+									tempVar = lexemes.get(index-1);
 									if(variables.get(tempVar) != null){
 										varType = new BaryaBall("", variables.get(tempVar));
 										if(varType.type.equals("boolean")){
@@ -370,7 +371,7 @@ public class Alebata2 {
 										close();
 									}
 									if(token.equals("IDENT")){
-										String tempVar = lexemes.get(index-1);
+										tempVar = lexemes.get(index-1);
 										if(variables.get(tempVar) != null){
 											varType = new BaryaBall("", variables.get(tempVar));
 											if(varType.type.equals("boolean")){
@@ -417,10 +418,11 @@ public class Alebata2 {
 
 						//check if number, string
 						if(ball.type.equals("number")){
-							equation = 0;
-							variables.put(var, lexemes.get(index-1));
+							System.out.println("HUeHEU NUM " + ball.getValue() + " " + ball.getName());
+							variables.put(var, ball.getValue());
+							//equation = 0;
 							//can't make this work
-							numStart();
+							//numStart();
 						}
 						else if(ball.type.equals("string")){
 							System.out.println("Strings should be placed inside a \"\"");
