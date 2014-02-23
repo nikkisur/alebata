@@ -49,6 +49,7 @@ public class Alebata2 {
 		S();
 	}
 
+	//lexical analyzer
 	public static void action(){
 		int lineNum = 0;
 		while(scan.hasNext()){
