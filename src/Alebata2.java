@@ -30,6 +30,7 @@ public class Alebata2 {
 	private static String token;
 	private static float numValue;
 	private static float equation = 0;
+	private static boolean errFlag = false;
 
 	public static void main(String args[]){
 		// a variable for scanning every line of user input
@@ -45,7 +46,7 @@ public class Alebata2 {
 		addReservedWords();
 		action();
 		getNextToken();
-		A();
+		S();
 	}
 
 	public static void action(){
@@ -56,56 +57,60 @@ public class Alebata2 {
 			String[] words = line.split("(?<=[\\!\"()*/%^+-])|(?=[\\!\"()*/%^+-])| ");
 			String value = "";
 
-			if(line.charAt(line.length()-1) != '!'){
-				System.out.println("Error at line#" + lineNum + ": should end with ! ");
-				close();
-			}
-			if(line.contains("\"")){
-				for(int a = 0; a < words.length; a++){
-					String word = words[a];
-					if(word.length() > 0 && word.charAt(0) == ' '){
-						String tempWord = word.substring(1, word.length());
-						if(reservedWords.get(tempWord) != null)
-							word = tempWord;
-					}
-					if(reservedWords.get(word) != null){
-						tokens.add(reservedWords.get(word));
-
-						lexemes.add(word);
-						//																		System.out.println(word + "			"+ reservedWords.get(word));
-					}
-					else{
-						if(!word.equals("") && !word.equals(" ")){
-							tokens.add("IDENT");
-							lexemes.add(word);
-							//							System.out.println(word + "			IDENT");
+			System.out.println("---line: " + line);
+			if(!line.isEmpty()) //current line in program should not be empty
+			{
+				if(line.charAt(line.length()-1) != '!'){
+					System.out.println("Error at line#" + lineNum + ": should end with ! ");
+					close();
+				}
+				if(line.contains("\"")){
+					for(int a = 0; a < words.length; a++){
+						String word = words[a];
+						if(word.length() > 0 && word.charAt(0) == ' '){
+							String tempWord = word.substring(1, word.length());
+							if(reservedWords.get(tempWord) != null)
+								word = tempWord;
 						}
-						else if(word.equals(" ")){
-							tokens.add("SPACE");
-							lexemes.add(" ");
+						if(reservedWords.get(word) != null){
+							tokens.add(reservedWords.get(word));
+
+							lexemes.add(word);
+							//																		System.out.println(word + "			"+ reservedWords.get(word));
+						}
+						else{
+							if(!word.equals("") && !word.equals(" ")){
+								tokens.add("IDENT");
+								lexemes.add(word);
+								//							System.out.println(word + "			IDENT");
+							}
+							else if(word.equals(" ")){
+								tokens.add("SPACE");
+								lexemes.add(" ");
+							}
 						}
 					}
 				}
-			}
-			else{
-				for(String word: words){
-					if(reservedWords.get(word) != null){
-						tokens.add(reservedWords.get(word));
-						lexemes.add(word);
-						//					System.out.println(word + "			"+ reservedWords.get(word));
-					}
-					else{
-						if(!word.equals("")){
-							tokens.add("IDENT");
+				else{
+					for(String word: words){
+						if(reservedWords.get(word) != null){
+							tokens.add(reservedWords.get(word));
 							lexemes.add(word);
-							//						System.out.println(word + "			IDENT");
+							//					System.out.println(word + "			"+ reservedWords.get(word));
+						}
+						else{
+							if(!word.equals("")){
+								tokens.add("IDENT");
+								lexemes.add(word);
+								//						System.out.println(word + "			IDENT");
+							}
 						}
 					}
 				}
 			}
 		}
 		for(int a = 0; a < tokens.size(); a++){
-			System.out.println(tokens.get(a) + "          " + lexemes.get(a));
+			System.out.println(tokens.get(a) + "\t\t" + lexemes.get(a));
 		}
 	}
 
@@ -114,6 +119,18 @@ public class Alebata2 {
 			token = null;
 		else
 			token = tokens.get(index++);
+	}
+
+	// S -> A
+	public static void S()
+	{
+		A();
+		// if( token.equals("") && !errFlag )
+		// 	System.out.println( "program accepted" );
+		// else
+		// {	
+		// 	System.out.printf( "program not accepted (error on or before position %d)\n", index);
+		// }
 	}
 
 	//A -> GAWAB 
@@ -590,7 +607,6 @@ public class Alebata2 {
 		return true;
 	}
 
-<<<<<<< HEAD
 	public static Boolean checkTrue(String value, String var){
 		if(value != null){
 			if(value.equals("TRUE"))
@@ -614,8 +630,7 @@ public class Alebata2 {
 		}
 		return true;
 	}
-=======
->>>>>>> d356c06f0269949ef7ea4b1321a5f4a3792b4763
+
 	public static void createArray(String name, int num){
 		for(int a = 1; a < num+1; a++){
 			variables.put(name + "#" + a, "");
