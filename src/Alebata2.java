@@ -891,17 +891,9 @@ public class Alebata2 {
 			close();
 		}
 		else if(op == 5){
-			System.out.println("AY HINDI PAREHO SA");
-			close();
-		}
-		else if(op == 6){
-			System.out.println("AY HINDI PANTAY SA");
-			close();
-		}
-		else{
 			if(token.equals("DQUOTE") || token.equals("IDENT")){
 				if(!varType.type.equals("string")){
-					System.out.println("Can only compare strings for AY PAREHO SA");
+					System.out.println("Can only compare strings for AY HINDI PAREHO SA");
 					close();
 				}
 				String string = "";
@@ -921,12 +913,59 @@ public class Alebata2 {
 				}
 				else{
 					getNextToken();
-					String stringVal = "";
 					while(token != null && !token.equals("DQUOTE")){
-						stringVal += lexemes.get(index-1);
+						string += lexemes.get(index-1);
 						getNextToken();
-						if(token != null && token.equals("DQUOTE") && stringVal.charAt(stringVal.length()-1) == '\\'){
-							string = stringVal.substring(0, stringVal.length()-1) + "\"";
+						if(token != null && token.equals("DQUOTE") && string.charAt(string.length()-1) == '\\'){
+							string = string.substring(0, string.length()-1) + "\"";
+							getNextToken();
+						}
+					}
+					if(token == null){
+						System.out.println("Syntax error for var AY string: Unclosed \" ");
+						close();
+					}
+				}
+				return !string.equals(varString);
+
+			}
+			else{
+				System.out.println("Can only compare string for AY PAREHO SA");
+				close();
+			}
+		}
+		else if(op == 6){
+			System.out.println("AY HINDI PANTAY SA");
+			close();
+		}
+		else{
+			if(token.equals("DQUOTE") || token.equals("IDENT")){
+				if(!varType.type.equals("string")){
+					System.out.println("Can only compare strings for AY HINDI PAREHO SA");
+					close();
+				}
+				String string = "";
+				String varString = varType.value;
+				if(token.equals("IDENT")){
+					if(variables.get(lexemes.get(index-1)) == null){
+						System.out.println("Declare " +lexemes.get(index-1));
+						close();
+					}
+
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					if(!compareVar.type.equals("string")){
+						System.out.println("Can't compare non-string types");
+						close();
+					}
+					string = variables.get(lexemes.get(index-1));
+				}
+				else{
+					getNextToken();
+					while(token != null && !token.equals("DQUOTE")){
+						string += lexemes.get(index-1);
+						getNextToken();
+						if(token != null && token.equals("DQUOTE") && string.charAt(string.length()-1) == '\\'){
+							string = string.substring(0, string.length()-1) + "\"";
 							getNextToken();
 						}
 					}
