@@ -994,8 +994,6 @@ public class Alebata2 {
 
 	public static void gawin()
 	{
-		System.out.println("GAWIN");
-		/*
 		if(token.equals("GAWIN"))
 		{
 			getNextToken();
@@ -1004,31 +1002,27 @@ public class Alebata2 {
 			{
 				getNextToken();
 				skipSpace();
-				while(!token.equals("TAMA"))
+				while(!token.equals("TAMA") && !token.equals("PERO"))
 				{
-					System.out.println("PASOK!");
+					A();
 					getNextToken();
 					skipSpace();
-					//A();
 				}
-				getNextToken();
-				skipSpace();
-				if(token.equals("NA"))
+				if(token.equals("TAMA"))
 				{
 					getNextToken();
 					skipSpace();
-					if(token.equals("TERMINATOR"))
+					if(!token.equals("NA"))
 					{
-						getNextToken();
-						skipSpace();
-						A();	
+						System.out.println("No NA, gawin");
+						close();				
 					}
 				}
-				else
-				{
-					System.out.println("Error");
-					close();
-				}
+			}
+			else
+			{
+				System.out.println("Syntax: GAWIN ITO");
+				close();
 			}
 		}
 		else
@@ -1036,13 +1030,49 @@ public class Alebata2 {
 			System.out.println("Error: Expected GAWIN");
 			close();
 		}
-		*/
 	}
 
 	public static void pero()
 	{
-		System.out.println("PERO");
-		close();
+		if(token.equals("PERO"))
+		{
+			getNextToken();
+			skipSpace();
+			if(token.equals("KUNG"))
+			{
+				getNextToken();
+				skipSpace();
+				if(token.equals("HINDI"))
+				{
+					while(!token.equals("TAMA"))
+					{
+						System.out.println("PASOK PERO");
+						//A();
+					}
+					getNextToken();
+					skipSpace();
+					if(!token.equals("NA"))
+					{
+						System.out.println("No NA, pero");
+					}
+				}
+				else
+				{
+					System.out.println("Expected: PERO KUNG HINDI");
+					close();
+				}
+			}
+			else
+			{
+				System.out.println("Expected: PERO KUNG");
+				close();
+			}
+		}
+		else
+		{
+			System.out.println("Error: Expected PERO");
+			close();
+		}
 	}
 
 	/*
