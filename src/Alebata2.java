@@ -215,7 +215,7 @@ public class Alebata2 {
 
 	// var assignment
 	//C -> 'AY'
-	public static void C(){
+	public static void C(Boolean hindi){
 		if(variables.get(var) != null){
 			skipSpace();
 			if(token.equals("DQUOTE")){
@@ -231,26 +231,11 @@ public class Alebata2 {
 				}
 				variables.put(var, value);
 			}
-			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || token.equals("HINDI")){
+			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || hindi){
 				String tempVar = "";
 				Boolean value = null;
 				BaryaBall varType = null;
-				if(token.equals("IDENT")){
-					tempVar = lexemes.get(index-1);
-					if(variables.get(tempVar) != null){
-						varType = new BaryaBall("", variables.get(tempVar));
-						if(varType.type.equals("boolean")){
-							value = checkTrue(null, tempVar);
-						}
-					}
-				}
-				else if(token.equals("TAMA")){
-					value = checkTrue("TAMA", "");
-				}
-				else if(token.equals("MALI")){
-					value = checkTrue("MALI", "");
-				}
-				else if(token.equals("HINDI")){
+				if(hindi){
 					getNextToken();
 					skipSpace();
 					if(token == null){
@@ -276,6 +261,21 @@ public class Alebata2 {
 						System.out.println("Can't compare non-boolean types");
 						close();
 					}
+				}
+				else if(token.equals("IDENT")){
+					tempVar = lexemes.get(index-1);
+					if(variables.get(tempVar) != null){
+						varType = new BaryaBall("", variables.get(tempVar));
+						if(varType.type.equals("boolean")){
+							value = checkTrue(null, tempVar);
+						}
+					}
+				}
+				else if(token.equals("TAMA")){
+					value = checkTrue("TAMA", "");
+				}
+				else if(token.equals("MALI")){
+					value = checkTrue("MALI", "");
 				}
 				
 				if(value != null){
@@ -485,6 +485,9 @@ public class Alebata2 {
 		{	
 			System.out.println( "arithmetic exp not accepted");
 		}
+		/*if(token.equals("TERMINATOR")){
+			System.out.println(number);
+		}*/
 		return ans;
 	}
 
@@ -497,13 +500,11 @@ public class Alebata2 {
 			if(token.equals("PLUS"))
 			{
 				getNextToken();
-				skipSpace();
 				x += multDivideMod();
 			}
 			else
 			{
 				getNextToken();
-				skipSpace();
 				x -= multDivideMod();
 			}
 		}
@@ -519,19 +520,16 @@ public class Alebata2 {
 			if(token.equals("MULT"))
 			{
 				getNextToken();
-				skipSpace();
 				x *= exp();
 			}
 			else if(token.equals("DIVIDE"))
 			{
 				getNextToken();
-				skipSpace();
 				x = x / exp();
 			}
 			else if(token.equals("MODULO"))
 			{
 				getNextToken();
-				skipSpace();
 				x = x % exp();
 			}
 		}
@@ -545,7 +543,6 @@ public class Alebata2 {
 		if(token.equals("EXP"))
 		{
 			getNextToken();
-			skipSpace();
 			x = Math.pow(x, unary());
 		}
 		else
@@ -559,7 +556,6 @@ public class Alebata2 {
 		if(token.equals("MINUS"))
 		{
 			getNextToken();
-			skipSpace();
 			x *= balyu();
 		}
 		else
@@ -575,23 +571,19 @@ public class Alebata2 {
 		{
 			x = Double.parseDouble(lexemes.get(index-1));
 			getNextToken();
-			skipSpace();
 		}	
 		else if(token.equals("IDENT"))
 		{
 			x = Double.parseDouble(variables.get(lexemes.get(index-1)));
 			getNextToken();
-			skipSpace();
 		}
 		else if(token.equals("LPAREN"))
 		{
 			getNextToken();
-			skipSpace();
 			x = addSubtract();
 			if(token.equals("RPAREN"))
 			{
 				getNextToken();
-				skipSpace();
 			}
 			else
 				System.out.println("ERROR P");
@@ -665,6 +657,7 @@ public class Alebata2 {
 			System.out.println("Syntax error: ILABAS MO BEYBEH <value>");
 			close();
 		}
+		System.out.println();
 	}
 
 	//check what kind of AY
@@ -764,7 +757,7 @@ public class Alebata2 {
 						F(6);
 					}
 					else{
-						C();
+						C(true);
 						var = "";
 					}
 				}
@@ -777,7 +770,7 @@ public class Alebata2 {
 
 		}
 		else{
-			C();
+			C(false);
 			var = "";
 		}
 
