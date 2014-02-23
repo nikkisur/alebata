@@ -413,9 +413,36 @@ public class Alebata2 {
 							variables.put(var, "MALI");
 						}
 					}
-					else
+					else //value is not boolean
 					{
-						BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
+						if(token.equals("NUMBER"))
+						{
+							variables.put(var, numStart());
+							System.out.println("HAHA " + var + " " + variables.get(var));
+						}
+						else if(token.equals("IDENT"))
+						{
+							String temp = variables.get(lexemes.get(index-1));
+							if(temp != null) //existing variable
+							{
+								if(isNumeric(temp)) //variable is num
+								{
+									variables.put(var, numStart());
+									System.out.println("HAHA " + var + " " + variables.get(var));
+								}
+								else
+								{
+									System.out.println("error: " + lexemes.get(index-1) + " is not num data type");
+									close();
+								}
+							}
+						}
+						else
+						{
+							System.out.println("error: wrong variable assignment statement");
+							close();
+						}
+						/*BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
 
 						//check if number, string
 						if(ball.type.equals("number")){
@@ -428,7 +455,7 @@ public class Alebata2 {
 						else if(ball.type.equals("error")){
 							System.out.println("Wrong number format");
 							close();
-						}
+						}*/
 					}
 				}
 			}
@@ -447,6 +474,133 @@ public class Alebata2 {
 			close();
 		}
 	}
+
+	/*
+
+	MATH STUFF STARTS HERE
+	
+	*/
+	public static String numStart(){
+		String ans = "" + addSubtract();
+		if( token.equals("TERMINATOR") && !errFlag )
+			System.out.println( "arithmetic exp accepted" );
+		else
+		{	
+			System.out.println( "arithmetic exp not accepted");
+		}
+		/*if(token.equals("TERMINATOR")){
+			System.out.println(number);
+		}*/
+		return ans;
+	}
+
+	//M -> T {('+'|'-') T}
+	public static double addSubtract()
+	{
+		double x = multDivideMod();
+		while(token.equals("PLUS") || token.equals("MINUS"))
+		{
+			if(token.equals("PLUS"))
+			{
+				getNextToken();
+				x += multDivideMod();
+			}
+			else
+			{
+				getNextToken();
+				x -= multDivideMod();
+			}
+		}
+		return x;
+	}
+
+	//T -> E {('*'|'/'|'%') E}	
+	public static double multDivideMod()
+	{
+		double x = exp();
+		while(token.equals("MULT") || token.equals("DIVIDE") || token.equals("MODULO"))
+		{
+			if(token.equals("MULT"))
+			{
+				getNextToken();
+				x *= exp();
+			}
+			else if(token.equals("DIVIDE"))
+			{
+				getNextToken();
+				x = x / exp();
+			}
+			else if(token.equals("MODULO"))
+			{
+				getNextToken();
+				x = x % exp();
+			}
+		}
+		return x;
+	}
+
+	//S -> F '^' S | F
+	public static double exp()
+	{
+		double x = unary();
+		if(token.equals("EXP"))
+		{
+			getNextToken();
+			x = Math.pow(x, unary());
+		}
+		else
+			;
+		return x;
+	}
+
+	public static double unary()
+	{
+		double x = -1;
+		if(token.equals("MINUS"))
+		{
+			getNextToken();
+			x *= balyu();
+		}
+		else
+			x = balyu();
+		return x;
+	}
+
+	//P -> '(' E ')' | number/var value
+	public static double balyu()
+	{
+		double x = 0;
+		if(token.equals("NUMBER"))
+		{
+			x = Double.parseDouble(lexemes.get(index-1));
+			getNextToken();
+		}	
+		else if(token.equals("IDENT"))
+		{
+			x = Double.parseDouble(variables.get(lexemes.get(index-1)));
+			getNextToken();
+		}
+		else if(token.equals("LPAREN"))
+		{
+			getNextToken();
+			x = addSubtract();
+			if(token.equals("RPAREN"))
+			{
+				getNextToken();
+			}
+			else
+				System.out.println("ERROR P");
+		}
+		else
+			System.out.println("ERROR P1");
+		return x;
+	}
+	/*
+
+	MATH STUFF ENDS HERE
+
+	*/
+
 
 	//PRINT
 	public static void D(){
@@ -509,12 +663,6 @@ public class Alebata2 {
 	}
 
 	//--------------------------------------------------
-	public static void numStart(){
-		//		float number = numA();
-		if(token.equals("TERMINATOR")){
-			System.out.println(number);
-		}
-	}
 
 	//	public static float numA(){
 	//		float value = numB();
