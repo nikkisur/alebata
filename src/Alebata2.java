@@ -97,9 +97,8 @@ public class Alebata2 {
 	}
 
 	public static void getNextToken(){
-		if(index == tokens.size()){
+		if(index == tokens.size())
 			token = null;
-		}
 		else
 			token = tokens.get(index++);
 	}
@@ -120,7 +119,7 @@ public class Alebata2 {
 	//A -> 'GAWA' B | IDENT C | 'ILABAS' D 
 	public static void A(){
 		while(token != null){
-			if(token.equals("TYPE1")){
+			if(token.equals("GAWA")){
 				getNextToken();
 				skipSpace();
 				
@@ -139,7 +138,7 @@ public class Alebata2 {
 				C();
 				var = "";
 			}
-			else if(token.equals("PRINT1")){
+			else if(token.equals("ILABAS")){
 				getNextToken();
 				skipSpace();
 				if(token == null){
@@ -154,46 +153,41 @@ public class Alebata2 {
 	//B -> 'NG' IDENT -- var declarations
 	public static void B(){
 		if(token != null){
-			if(token.equals("TYPE2")){
+			if(token.equals("NG")){
 				getNextToken();
 				skipSpace();
-				if(token.equals("IDENT")){
-					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-					if(ball.type.equals("number")){
-						int arrayNum = Integer.parseInt(ball.value);
+				if(token.equals("NUMBER"))
+				{
+					int arrayNum = Integer.parseInt(lexemes.get(index-1));
+					getNextToken();
+					skipSpace();
+					if(token != null && token.equals("NA")){
 						getNextToken();
-						if(token != null && token.equals("ARRAYTYPE")){
+						if(token != null && (token.equals("IDENT") || token.equals("NUMBER")))
+						{
+							checkVar(lexemes.get(index-1), true, arrayNum);
 							getNextToken();
 							skipSpace();
-							if(token != null && token.equals("IDENT")){
-								String var = "";
-								while(token != null && !token.equals("TERMINATOR")){
-									var += lexemes.get(index-1);
-									getNextToken();
-									skipSpace();
-								}
-								checkVar(var, true, arrayNum);
-								getNextToken();
-							}
-							else{
-								System.out.println("Wrong syntax: GAWA NG <num> NA <var>");
-								close();
-							}
 						}
 						else{
-							System.out.println("Wrong syntax");
+							System.out.println("Wrong syntax: GAWA NG <num> NA <var>");
 							close();
 						}
 					}
 					else{
-						var = "";
+						System.out.println("Wrong syntax");
+						close();
+					}
+				}
+				else if(token.equals("IDENT")){
+					var = "";
 						while(token != null && !token.equals("TERMINATOR")){
 							var += lexemes.get(index-1);
 							getNextToken();
 							skipSpace();
 						}
 						checkVar(var, false, 0);
-					}
+					
 				}
 
 				if(token == null || !token.equals("TERMINATOR")){
@@ -208,11 +202,12 @@ public class Alebata2 {
 			close();
 		}
 	}
-
-	//C -> 'AY' -- var assignments
+	
+	// var assignment
+	//C -> 'AY'
 	public static void C(){
 		if(variables.get(var) != null){
-			if(token.equals("EQUALS")){
+			if(token.equals("AY")){
 				getNextToken();
 				skipSpace();
 				if(token.equals("DQUOTE")){
@@ -228,7 +223,7 @@ public class Alebata2 {
 					}
 					variables.put(var, value);
 				}
-				else if(token.equals("IDENT") || token.equals("TRUE") || token.equals("FALSE")){
+				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI")){
 					//					if(token.equals("IDENT")){	
 					String tempVar = "";
 					Boolean value = null;
@@ -243,17 +238,17 @@ public class Alebata2 {
 							}
 						}
 					}
-					else if(token.equals("TRUE")){
-						value = checkTrue("TRUE", "");
+					else if(token.equals("TAMA")){
+						value = checkTrue("TAMA", "");
 					}
-					else if(token.equals("FALSE")){
-						value = checkTrue("FALSE", "");
+					else if(token.equals("MALI")){
+						value = checkTrue("MALI", "");
 					}
 
 					if(value != null){
 						getNextToken();
 						while(!token.equals("TERMINATOR")){
-							if(token.equals("TYPE3")){
+							if(token.equals("AT")){
 								getNextToken();
 								skipSpace();
 								if(token.equals("IDENT")){
@@ -265,7 +260,7 @@ public class Alebata2 {
 									}
 								}
 							}
-							else if(token.equals("OR")){
+							else if(token.equals("O")){
 
 							}
 							else if(token.equals("HINDI")){
@@ -277,9 +272,9 @@ public class Alebata2 {
 							close();
 						}
 						if(value)
-							variables.put(tempVar, "TRUE");
+							variables.put(tempVar, "TAMA");
 						else
-							variables.put(tempVar, "FALSE");
+							variables.put(tempVar, "MALI");
 					}
 					else{
 						BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
@@ -307,7 +302,7 @@ public class Alebata2 {
 					//						getNextToken();
 					//						value = checkTrue(null, tempVar);
 					//						while(!token.equals("TERMINATOR")){
-					//							if(token.equals("TYPE3")){
+					//							if(token.equals("AT")){
 					//								getNextToken();
 					//								if(token.equals("IDENT")){
 					//									BaryaBall ball = new BaryaBall(tokens.get(index-1), lexemes.get(index-1));
@@ -318,7 +313,7 @@ public class Alebata2 {
 					//									}
 					//								}
 					//							}
-					//							else if(token.equals("OR")){
+					//							else if(token.equals("O")){
 					//
 					//							}
 					//							else if(token.equals("HINDI")){
@@ -330,9 +325,9 @@ public class Alebata2 {
 					//							close();
 					//						}
 					//						if(value)
-					//							variables.put(tempVar, "TRUE");
+					//							variables.put(tempVar, "TAMA");
 					//						else
-					//							variables.put(tempVar, "FALSE");
+					//							variables.put(tempVar, "MALI");
 					//					}
 					//					}
 				}
@@ -351,10 +346,10 @@ public class Alebata2 {
 	//PRINT
 	public static void D(){
 		String value = "";
-		if(token != null && token.equals("PRINT2")){
+		if(token != null && token.equals("MO")){
 			getNextToken();
 			skipSpace();
-			if(token != null && token.equals("PRINT3")){
+			if(token != null && token.equals("BEYBEH")){
 				getNextToken();
 				skipSpace();
 				if(token.equals("TERMINATOR")){
@@ -362,7 +357,7 @@ public class Alebata2 {
 					close();
 				}
 				while(token != null && !token.equals("TERMINATOR")){
-					if(token.equals("ADDIT")){
+					if(token.equals("PATI")){
 						getNextToken();
 						skipSpace();
 						if(token == null || token.equals("TERMINATOR")){
@@ -636,9 +631,9 @@ public class Alebata2 {
 
 	public static Boolean checkTrue(String value, String var){
 		if(value != null){
-			if(value.equals("TRUE"))
+			if(value.equals("TAMA"))
 				return true;
-			else if(value.equals("FALSE"))
+			else if(value.equals("MALI"))
 				return false;
 			else{
 				System.out.println(var + " is not a Boolean");
@@ -646,9 +641,9 @@ public class Alebata2 {
 			}
 		}
 		else{
-			if(variables.get(var).equals("TRUE"))
+			if(variables.get(var).equals("TAMA"))
 				return true;
-			else if(variables.get(var).equals("FALSE"))
+			else if(variables.get(var).equals("MALI"))
 				return false;
 			else{
 				System.out.println(var + " is not a Boolean");
