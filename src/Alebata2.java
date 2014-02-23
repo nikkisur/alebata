@@ -800,6 +800,8 @@ public class Alebata2 {
 			System.out.println("Syntax: AY <condition> SA");
 			close();
 		}
+		getNextToken();
+		skipSpace();
 		if(op == 0){
 			System.out.println("AY MAS MALIIT SA");
 			close();
