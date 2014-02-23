@@ -191,13 +191,12 @@ public class Alebata2 {
 							close();
 						}
 					}
-				}
-				else{
-					while(token!= null && token.equals("IDENT")){
+					else{
 						checkVar(lexemes.get(index-1), false, 0);
 						getNextToken();
 					}
 				}
+				
 				if(token == null || !token.equals("TERMINATOR")){
 					System.out.println("Missing ! at the end of line");
 					close();
@@ -284,6 +283,8 @@ public class Alebata2 {
 					}
 					else{
 						BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
+						
+						//check if number, string
 						if(ball.type.equals("number")){
 							equation = 0;
 							//can't make this work
@@ -296,9 +297,6 @@ public class Alebata2 {
 						else if(ball.type.equals("error")){
 							System.out.println("Wrong number format");
 							close();
-						}
-						else{
-							variables.put(var, lexemes.get(index-1));
 						}
 					}
 //					while(token.equals("TERMINATOR")){
