@@ -469,8 +469,7 @@ public class Alebata2 {
 			}
 		}
 		else{
-			if(arrays.get(var) != -1){
-				System.out.println(var + " has already been used for an array");
+			if(!arrays.isEmpty() && arrays.get(var) != -1){
 				System.out.println(var + " has already been used for an array");
 				close();
 			}
