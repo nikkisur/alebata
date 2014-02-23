@@ -223,7 +223,7 @@ public class Alebata2 {
 					}
 					variables.put(var, value);
 				}
-				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI")){
+				else if(token.equals("IDENT") || token.equals("NUMBER") || token.equals("TAMA") || token.equals("MALI")){
 					//					if(token.equals("IDENT")){	
 					String tempVar = "";
 					Boolean value = null;
@@ -281,9 +281,11 @@ public class Alebata2 {
 
 						//check if number, string
 						if(ball.type.equals("number")){
-							equation = 0;
+							System.out.println("HUeHEU NUM " + ball.getValue() + " " + ball.getName());
+							variables.put(var, ball.getValue());
+							//equation = 0;
 							//can't make this work
-							numStart();
+							//numStart();
 						}
 						else if(ball.type.equals("string")){
 							System.out.println("Strings should be placed inside a \"\"");
