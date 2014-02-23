@@ -20,10 +20,13 @@ public class BaryaBall {
 		for(int i = 0; i < v.length(); i++){
 			if(v.charAt(i) == '-' && i == 0)
 				i = 1;
-			if(v.charAt(i) == '.')
+			if(v.charAt(i) == '.'){
 				period++;
-			if(!Character.isDigit(v.charAt(i)) || (v.charAt(i) != '(' && period > 1))
+				i++;
+			}
+			if(!Character.isDigit(v.charAt(i)) || (v.charAt(i) != '(' && period > 1)){
 				break;
+			}
 			else if((i+1) == v.length())
 				digitLahat = true;
 		}

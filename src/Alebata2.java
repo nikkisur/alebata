@@ -282,8 +282,8 @@ public class Alebata2 {
 				else if(token.equals("MALI")){
 					value = checkTrue("MALI", "");
 				}
-				
-				
+
+
 				if(value != null){
 					getNextToken();
 					skipSpace();
@@ -683,6 +683,7 @@ public class Alebata2 {
 		getNextToken();
 		skipSpace();
 		if(token.equals("MAS")){
+			getNextToken();
 			skipSpace();
 			if(token == null && (!token.equals("MALIIT") && !token.equals("MALAKI"))){
 				System.out.println("Invalid syntax for MAS");
@@ -690,6 +691,7 @@ public class Alebata2 {
 			}
 			else{
 				String lessthan = token;
+				getNextToken();
 				skipSpace();
 				if(token == null){
 					System.out.println("Invalid syntax for MAS");
@@ -795,13 +797,19 @@ public class Alebata2 {
 	}
 
 	//EQUAL, LESS THAN, GREATER THAN
-	public static void F(int op){
+	public static Boolean F(int op){
 		if(!token.equals("SA")){
 			System.out.println("Syntax: AY <condition> SA");
 			close();
 		}
 		getNextToken();
 		skipSpace();
+		BaryaBall varType = new BaryaBall("", variables.get(var));
+		if(token == null || token.equals("TERMINATOR")){
+			System.out.println("Syntax: AY <condition> SA ! is invalid");
+			close();
+		}
+
 		if(op == 0){
 			System.out.println("AY MAS MALIIT SA");
 			close();
@@ -815,12 +823,71 @@ public class Alebata2 {
 			close();
 		}
 		else if(op == 3){
-			System.out.println(token);
-			System.out.println("AY PANTAY O MAS MALIIT SA");
+			if(token.equals("NUMBER") || token.equals("IDENT")){
+				if(!varType.type.equals("number")){
+					System.out.println("Can only compare numbers for AY PANTAY O MAS MALIIT SA");
+					close();
+				}
+				float num;
+				float varNum = Float.parseFloat(varType.value);
+				if(token.equals("IDENT")){
+					if(variables.get(variables.get(lexemes.get(index-1))) == null){
+						System.out.println("Declare " + variables.get(lexemes.get(index-1)));
+						close();
+					}
+
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					if(!compareVar.type.equals("number")){
+						System.out.println("Can't compare non-number types");
+						close();
+					}
+					num = Float.parseFloat(lexemes.get(index-1));
+
+				}
+				else{
+					num = Float.parseFloat(lexemes.get(index-1));
+				}
+				return varNum <= num;
+
+			}
+			else{
+				System.out.println("Can only compare numbers for AY PANTAY O MAS MALIIT SA");
+				close();
+			}
 			close();
 		}
 		else if(op == 4){
-			System.out.println("AY PANTAY O MAS MALAKI SA");
+			if(token.equals("NUMBER") || token.equals("IDENT")){
+				if(!varType.type.equals("number")){
+					System.out.println("Can only compare numbers for AY PANTAY O MAS MALAKI SA");
+					close();
+				}
+				float num;
+				float varNum = Float.parseFloat(varType.value);
+				if(token.equals("IDENT")){
+					if(variables.get(variables.get(lexemes.get(index-1))) == null){
+						System.out.println("Declare " + variables.get(lexemes.get(index-1)));
+						close();
+					}
+
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					if(!compareVar.type.equals("number")){
+						System.out.println("Can't compare non-number types");
+						close();
+					}
+					num = Float.parseFloat(lexemes.get(index-1));
+
+				}
+				else{
+					num = Float.parseFloat(lexemes.get(index-1));
+				}
+				return varNum >= num;
+
+			}
+			else{
+				System.out.println("Can only compare numbers for AY PANTAY O MAS MALAKI SA");
+				close();
+			}
 			close();
 		}
 		else if(op == 5){
@@ -835,6 +902,7 @@ public class Alebata2 {
 			System.out.println("AY PAREHO SA");
 			close();
 		}
+		return true;
 	}
 	//--------------------------------------------------
 
