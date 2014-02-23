@@ -135,8 +135,13 @@ public class Alebata2 {
 				if(token == null){
 					System.out.println("Invalid syntax");
 				}
-				C();
-				var = "";
+				else if(token.equals("AY")){
+					E();
+				}
+				else{
+					System.out.println("Invalid syntax: var AY ");
+					close();
+				}
 			}
 			else if(token.equals("ILABAS")){
 				getNextToken();
@@ -212,120 +217,80 @@ public class Alebata2 {
 	//C -> 'AY'
 	public static void C(){
 		if(variables.get(var) != null){
-			if(token.equals("AY")){
+			skipSpace();
+			if(token.equals("DQUOTE")){
 				getNextToken();
-				skipSpace();
-				if(token.equals("DQUOTE")){
+				String value = "";
+				while(!token.equals("DQUOTE")){
+					value += lexemes.get(index-1);
 					getNextToken();
-					String value = "";
-					while(!token.equals("DQUOTE")){
-						value += lexemes.get(index-1);
+					if(token != null && token.equals("DQUOTE") && value.charAt(value.length()-1) == '\\'){
+						value = value.substring(0, value.length()-1) + "\"";
 						getNextToken();
-						if(token != null && token.equals("DQUOTE") && value.charAt(value.length()-1) == '\\'){
-							value = value.substring(0, value.length()-1) + "\"";
-							getNextToken();
+					}
+				}
+				variables.put(var, value);
+			}
+			else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || token.equals("HINDI")){
+				String tempVar = "";
+				Boolean value = null;
+				BaryaBall varType = null;
+				if(token.equals("IDENT")){
+					tempVar = lexemes.get(index-1);
+					if(variables.get(tempVar) != null){
+						varType = new BaryaBall("", variables.get(tempVar));
+						if(varType.type.equals("boolean")){
+							value = checkTrue(null, tempVar);
 						}
 					}
-					variables.put(var, value);
 				}
-				else if(token.equals("IDENT") || token.equals("TAMA") || token.equals("MALI") || token.equals("NUMBER") || token.equals("HINDI")){
-					String tempVar = "";
-					Boolean value = null;
-					BaryaBall varType = null;
+				else if(token.equals("TAMA")){
+					value = checkTrue("TAMA", "");
+				}
+				else if(token.equals("MALI")){
+					value = checkTrue("MALI", "");
+				}
+				else if(token.equals("HINDI")){
+					getNextToken();
+					skipSpace();
+					if(token == null){
+						System.out.println("Syntax Error for HINDI");
+						close();
+					}
 					if(token.equals("IDENT")){
 						tempVar = lexemes.get(index-1);
 						if(variables.get(tempVar) != null){
 							varType = new BaryaBall("", variables.get(tempVar));
 							if(varType.type.equals("boolean")){
-								value = checkTrue(null, tempVar);
+								value = !checkTrue(null, tempVar);
 							}
 						}
 					}
 					else if(token.equals("TAMA")){
-						value = checkTrue("TAMA", "");
+						value = !checkTrue("TAMA", "");
 					}
 					else if(token.equals("MALI")){
-						value = checkTrue("MALI", "");
+						value = !checkTrue("MALI", "");
 					}
-					else if(token.equals("HINDI")){
-						getNextToken();
-						skipSpace();
-						if(token == null){
-							System.out.println("Syntax Error for HINDI");
-							close();
-						}
-						if(token.equals("IDENT")){
-							tempVar = lexemes.get(index-1);
-							if(variables.get(tempVar) != null){
-								varType = new BaryaBall("", variables.get(tempVar));
-								if(varType.type.equals("boolean")){
-									value = !checkTrue(null, tempVar);
-								}
-							}
-						}
-						else if(token.equals("TAMA")){
-							value = !checkTrue("TAMA", "");
-						}
-						else if(token.equals("MALI")){
-							value = !checkTrue("MALI", "");
-						}
-						else{
-							System.out.println("Can't compare non-boolean types");
-							close();
-						}
+					else{
+						System.out.println("Can't compare non-boolean types");
+						close();
 					}
-					
-					if(value != null){
-						getNextToken();
-						skipSpace();
-						while(token != null && !token.equals("TERMINATOR")){
-							if(token.equals("AT")){
-								getNextToken();
-								skipSpace();
-								if(token.equals("IDENT")){
-									tempVar = lexemes.get(index-1);
-									if(variables.get(tempVar) != null){
-										varType = new BaryaBall("", variables.get(tempVar));
-										if(varType.type.equals("boolean")){
-											value = value && checkTrue(null, tempVar);
-										}
-										else{
-											System.out.println("Can't compare non-boolean types");
-											close();
-										}
-									}
-									else{
-										System.out.println("Declare " + tempVar);
-										close();
-									}
-								}
-								else if(token.equals("TAMA")){
-									value = value && checkTrue("TAMA", null);
-								}
-								else if(token.equals("MALI")){
-									value = value && checkTrue("MALI", null);
-								}
-								else if(token.equals("HINDI")){
-									getNextToken();
-									skipSpace();
-									if(token == null){
-										System.out.println("Syntax Error for HINDI");
-										close();
-									}
-									if(token.equals("IDENT")){
-										tempVar = lexemes.get(index-1);
-										if(variables.get(tempVar) != null){
-											varType = new BaryaBall("", variables.get(tempVar));
-											if(varType.type.equals("boolean")){
-												value = value && !checkTrue(null, tempVar);
-											}
-										}
-									}
-									else if(token.equals("TAMA")){
-										value = value &&!checkTrue("TAMA", "");
-									}
-									else if(token.equals("MALI")){
-										value = value &&!checkTrue("MALI", "");
+				}
+				
+				if(value != null){
+					getNextToken();
+					skipSpace();
+					while(token != null && !token.equals("TERMINATOR")){
+						if(token.equals("AT")){
+							getNextToken();
+							skipSpace();
+							if(token.equals("IDENT")){
+								tempVar = lexemes.get(index-1);
+								if(variables.get(tempVar) != null){
+									varType = new BaryaBall("", variables.get(tempVar));
+									if(varType.type.equals("boolean")){
+										value = value && checkTrue(null, tempVar);
 									}
 									else{
 										System.out.println("Can't compare non-boolean types");
@@ -333,136 +298,168 @@ public class Alebata2 {
 									}
 								}
 								else{
-									System.out.println("Can't use non-boolean types for AT");
+									System.out.println("Declare " + tempVar);
 									close();
 								}
 							}
-							else if(token.equals("O")){
+							else if(token.equals("TAMA")){
+								value = value && checkTrue("TAMA", null);
+							}
+							else if(token.equals("MALI")){
+								value = value && checkTrue("MALI", null);
+							}
+							else if(token.equals("HINDI")){
 								getNextToken();
 								skipSpace();
+								if(token == null){
+									System.out.println("Syntax Error for HINDI");
+									close();
+								}
 								if(token.equals("IDENT")){
 									tempVar = lexemes.get(index-1);
 									if(variables.get(tempVar) != null){
 										varType = new BaryaBall("", variables.get(tempVar));
 										if(varType.type.equals("boolean")){
-											value = value || checkTrue(null, tempVar);
+											value = value && !checkTrue(null, tempVar);
 										}
-										else{
-											System.out.println("Can't compare non-boolean types");
-											close();
-										}
-									}
-									else{
-										System.out.println("Declare " + tempVar);
-										close();
 									}
 								}
 								else if(token.equals("TAMA")){
-									value = value || checkTrue("TAMA", null);
+									value = value &&!checkTrue("TAMA", "");
 								}
 								else if(token.equals("MALI")){
-									value = value || checkTrue("MALI", null);
-								}
-								else if(token.equals("HINDI")){
-									getNextToken();
-									skipSpace();
-									if(token == null){
-										System.out.println("Syntax Error for HINDI");
-										close();
-									}
-									if(token.equals("IDENT")){
-										tempVar = lexemes.get(index-1);
-										if(variables.get(tempVar) != null){
-											varType = new BaryaBall("", variables.get(tempVar));
-											if(varType.type.equals("boolean")){
-												value = value || !checkTrue(null, tempVar);
-											}
-										}
-									}
-									else if(token.equals("TAMA")){
-										value = value || !checkTrue("TAMA", "");
-									}
-									else if(token.equals("MALI")){
-										value = value || !checkTrue("MALI", "");
-									}
-									else{
-										System.out.println("Can't compare non-boolean types");
-										close();
-									}
+									value = value &&!checkTrue("MALI", "");
 								}
 								else{
-									System.out.println("Can't use non-boolean types for AT");
+									System.out.println("Can't compare non-boolean types");
 									close();
 								}
 							}
 							else{
-								System.out.println("Invalid syntax for logical operators");
+								System.out.println("Can't use non-boolean types for AT");
 								close();
 							}
+						}
+						else if(token.equals("O")){
 							getNextToken();
 							skipSpace();
-						}
-						if(token == null || !token.equals("TERMINATOR")){
-							System.out.println("Needs to end in !");
-							close();
-						}
-						if(value){
-							variables.put(var, "TAMA");
-						}
-						else{
-							variables.put(var, "MALI");
-						}
-					}
-					else //value is not boolean
-					{
-						if(token.equals("NUMBER"))
-						{
-							variables.put(var, numStart());
-							System.out.println("HAHA " + var + " " + variables.get(var));
-						}
-						else if(token.equals("IDENT"))
-						{
-							String temp = variables.get(lexemes.get(index-1));
-							if(temp != null) //existing variable
-							{
-								if(isNumeric(temp)) //variable is num
-								{
-									variables.put(var, numStart());
-									System.out.println("HAHA " + var + " " + variables.get(var));
+							if(token.equals("IDENT")){
+								tempVar = lexemes.get(index-1);
+								if(variables.get(tempVar) != null){
+									varType = new BaryaBall("", variables.get(tempVar));
+									if(varType.type.equals("boolean")){
+										value = value || checkTrue(null, tempVar);
+									}
+									else{
+										System.out.println("Can't compare non-boolean types");
+										close();
+									}
 								}
-								else
-								{
-									System.out.println("error: " + lexemes.get(index-1) + " is not num data type");
+								else{
+									System.out.println("Declare " + tempVar);
 									close();
 								}
 							}
+							else if(token.equals("TAMA")){
+								value = value || checkTrue("TAMA", null);
+							}
+							else if(token.equals("MALI")){
+								value = value || checkTrue("MALI", null);
+							}
+							else if(token.equals("HINDI")){
+								getNextToken();
+								skipSpace();
+								if(token == null){
+									System.out.println("Syntax Error for HINDI");
+									close();
+								}
+								if(token.equals("IDENT")){
+									tempVar = lexemes.get(index-1);
+									if(variables.get(tempVar) != null){
+										varType = new BaryaBall("", variables.get(tempVar));
+										if(varType.type.equals("boolean")){
+											value = value || !checkTrue(null, tempVar);
+										}
+									}
+								}
+								else if(token.equals("TAMA")){
+									value = value || !checkTrue("TAMA", "");
+								}
+								else if(token.equals("MALI")){
+									value = value || !checkTrue("MALI", "");
+								}
+								else{
+									System.out.println("Can't compare non-boolean types");
+									close();
+								}
+							}
+							else{
+								System.out.println("Can't use non-boolean types for AT");
+								close();
+							}
 						}
-						else
-						{
-							System.out.println("error: wrong variable assignment statement");
+						else{
+							System.out.println("Invalid syntax for logical operators");
 							close();
 						}
-						/*BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
-
-						//check if number, string
-						if(ball.type.equals("number")){
-							variables.put(var, ball.getValue());
-						}
-						else if(ball.type.equals("string")){
-							System.out.println("Strings should be placed inside a \"\"");
-							close();
-						}
-						else if(ball.type.equals("error")){
-							System.out.println("Wrong number format");
-							close();
-						}*/
+						getNextToken();
+						skipSpace();
+					}
+					if(token == null || !token.equals("TERMINATOR")){
+						System.out.println("Needs to end in !");
+						close();
+					}
+					if(value){
+						variables.put(var, "TAMA");
+					}
+					else{
+						variables.put(var, "MALI");
 					}
 				}
-			}
-			else{
-				System.out.println("Syntax should be: <var_name> AY <value>");
-				close();
-				String[] a = {"As"};
+				else //value is not boolean
+				{
+					if(token.equals("NUMBER"))
+					{
+						variables.put(var, numStart());
+						System.out.println("HAHA " + var + " " + variables.get(var));
+					}
+					else if(token.equals("IDENT"))
+					{
+						String temp = variables.get(lexemes.get(index-1));
+						if(temp != null) //existing variable
+						{
+							if(isNumeric(temp)) //variable is num
+							{
+								variables.put(var, numStart());
+								System.out.println("HAHA " + var + " " + variables.get(var));
+							}
+							else
+							{
+								System.out.println("error: " + lexemes.get(index-1) + " is not num data type");
+								close();
+							}
+						}
+					}
+					else
+					{
+						System.out.println("error: wrong variable assignment statement");
+						close();
+					}
+					/*BaryaBall ball = new BaryaBall(var, lexemes.get(index-1));
+
+					//check if number, string
+					if(ball.type.equals("number")){
+						variables.put(var, ball.getValue());
+					}
+					else if(ball.type.equals("string")){
+						System.out.println("Strings should be placed inside a \"\"");
+						close();
+					}
+					else if(ball.type.equals("error")){
+						System.out.println("Wrong number format");
+						close();
+					}*/
+				}
 			}
 		}
 		else{
@@ -608,8 +605,8 @@ public class Alebata2 {
 	MATH STUFF ENDS HERE
 
 	*/
-
-
+	
+	
 	//PRINT
 	public static void D(){
 		String value = "";
@@ -670,154 +667,159 @@ public class Alebata2 {
 		}
 	}
 
+	//check what kind of AY
+	public static void E(){
+		getNextToken();
+		skipSpace();
+		if(token.equals("MAS")){
+			skipSpace();
+			if(token == null && (!token.equals("MALIIT") && !token.equals("MALAKI"))){
+				System.out.println("Invalid syntax for MAS");
+				close();
+			}
+			else{
+				String lessthan = token;
+				skipSpace();
+				if(token == null){
+					System.out.println("Invalid syntax for MAS");
+					close();
+				}
+				if(lessthan.equals("MALIIT")){
+					F(0);
+				}
+				else{
+					F(1);
+				}
+
+			}
+		}
+		else if(token.equals("PANTAY")){
+			getNextToken();
+			skipSpace();
+			if(token == null && (!token.equals("SA") && !token.equals("O"))){
+				System.out.println("Invalid syntax for MAS");
+				close();
+			}
+			else{
+				if(token.equals("SA")){
+					getNextToken();
+					skipSpace();
+					F(2);
+				}
+				else if(token.equals("O")){
+					getNextToken();
+					skipSpace();
+					if(token == null && !token.equals("MAS")){
+						System.out.println("Invalid syntax for PANTAY O" + lexemes.get(index-1));
+						close();
+					}
+					else{
+						getNextToken();
+						skipSpace();
+						if(token == null && (!token.equals("MALIIT") && !token.equals("MALAKI"))){
+							System.out.println("Invalid syntax for PANTAY O MAS");
+							close();
+						}
+						else{
+							String lessthan = token;
+							getNextToken();
+							skipSpace();
+							if(token == null){
+								System.out.println("Invalid syntax for PANTAY O MAS "+ lessthan);
+								close();
+							}
+							if(lessthan.equals("MALIIT")){
+								F(3);
+							}
+							else{
+								F(4);
+							}
+
+						}
+					}
+
+				}
+				else{
+					System.out.println("Invalid syntax for AY PANTAY");
+					close();
+				}
+			}
+		}
+		else if(token.equals("PAREHO") || token.equals("HINDI")){
+			if(token.equals("HINDI")){
+				getNextToken();
+				skipSpace();
+				if(token == null){
+					System.out.println("Invalid syntax for AY ");
+				}
+				else{
+					if(token.equals("PAREHO")){
+						getNextToken();
+						skipSpace();
+						F(5);
+					}
+					else if(token.equals("PANTAY")){
+						getNextToken();
+						skipSpace();
+						F(6);
+					}
+					else{
+						C();
+						var = "";
+					}
+				}
+				
+			}
+			else{
+				skipSpace();
+				F(7);
+			}
+
+		}
+		else{
+			C();
+			var = "";
+		}
+
+	}
+
+	//EQUAL, LESS THAN, GREATER THAN
+	public static void F(int op){
+		if(op == 0){
+			System.out.println("AY MAS MALIIT SA");
+			close();
+		}
+		else if(op == 1){
+			System.out.println("AY MAS MALAKI SA");
+			close();
+		}
+		else if(op == 2){
+			System.out.println("AY PANTAY SA");
+			close();
+		}
+		else if(op == 3){
+			System.out.println("AY PANTAY O MAS MALIIT SA");
+			close();
+		}
+		else if(op == 4){
+			System.out.println("AY PANTAY O MAS MALAKI SA");
+			close();
+		}
+		else if(op == 5){
+			System.out.println("AY HINDI PAREHO SA");
+			close();
+		}
+		else if(op == 6){
+			System.out.println("AY HINDI PANTAY SA");
+			close();
+		}
+		else{
+			System.out.println("AY PAREHO SA");
+			close();
+		}
+	}
 	//--------------------------------------------------
-
-	//	public static float numA(){
-	//		float value = numB();
-	//		getNextToken();
-	//		if(token == null){
-	//			System.out.println("Invalid math expression");
-	//			close();
-	//		}
-	//		while(token.equals("PLUS") || token.equals("MINUS")){
-	//			if(token.equals("PLUS")){
-	//				getNextToken();
-	//				if(token.equals("MINUS")){
-	//					getNextToken();
-	//					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//					if(ball.type.equals("number"))
-	//						lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
-	//					else{
-	//						System.out.println("Wrong number format");
-	//						close();
-	//					}
-	//				}
-	//				value += numB();
-	//			}
-	//			else if(token.equals("MINUS")){
-	//				getNextToken();
-	//				if(token.equals("MINUS")){
-	//					getNextToken();
-	//					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//					if(ball.type.equals("number"))
-	//						lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
-	//					else{
-	//						System.out.println("Wrong number format");
-	//						close();
-	//					}
-	//				}
-	//				value -= numB();
-	//			}
-	//			getNextToken();
-	//		}
-	//		return value;
-	//	}
-	//
-	//	public static float numB(){
-	//		float value = numC();
-	//		getNextToken();
-	//		if(token == null){
-	//			System.out.println("Invalid math expression");
-	//			close();
-	//		}
-	//		while(token.equals("MULT") || token.equals("DIVIDE" ) || token.equals("MODULO")){
-	//			if(token.equals("MULT")){
-	//				getNextToken();
-	//				if(token.equals("MINUS")){
-	//					getNextToken();
-	//					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//					if(ball.type.equals("number"))
-	//						lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
-	//					else{
-	//						System.out.println("Wrong number format");
-	//						close();
-	//					}
-	//				}
-	//				value *= numC();
-	//			}
-	//			else if(token.equals("DIVIDE")){
-	//				getNextToken();
-	//				if(token.equals("MINUS")){
-	//					getNextToken();
-	//					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//					if(ball.type.equals("number"))
-	//						lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
-	//					else{
-	//						System.out.println("Wrong number format");
-	//						close();
-	//					}
-	//				}
-	//				value /= numC();
-	//			}else if(token.equals("MODULO")){
-	//				getNextToken();
-	//				System.out.println("here");
-	//				if(token.equals("MINUS")){
-	//					getNextToken();
-	//					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//					if(ball.type.equals("number"))
-	//						lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
-	//					else{
-	//						System.out.println("Wrong number format");
-	//						close();
-	//					}
-	//				}
-	//				value %= numC();
-	//			}
-	//			getNextToken();
-	//			System.out.println(token);
-	//		}
-	//		return value;
-	//	}
-	//	public static float numC(){
-	//		float value = numD();
-	//		getNextToken();
-	//		if(token == null){
-	//			System.out.println("Invalid math expression");
-	//			close();
-	//		}
-	//		while(token.equals("EXP")){
-	//			if(token.equals("EXP")){
-	//				getNextToken();
-	//				if(token.equals("MINUS")){
-	//					getNextToken();
-	//					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//					if(ball.type.equals("number"))
-	//						lexemes.set(index-1, String.valueOf(Float.parseFloat(lexemes.get(index-1))*-1));
-	//					else{
-	//						System.out.println("Wrong number format");
-	//						close();
-	//					}
-	//				}
-	//				value = Integer.parseInt(String.valueOf(equation))^Integer.parseInt(String.valueOf(numD()));
-	//			}
-	//			getNextToken();
-	//		}
-	//		return value;
-	//	}
-	//	public static float numD(){
-	//		while(token.equals("PAREN")){
-	//			getNextToken();
-	//			equation = numA();
-	//			if(token.equals("ENDPAREN")){
-	//				getNextToken();
-	//			}
-	//			else{
-	//				System.out.println("Need to close ()");
-	//				close();
-	//			}
-	//
-	//		}
-	//		BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-	//		if(ball.type.equals("number")){
-	//			return Float.parseFloat(lexemes.get(index-1));
-	//		}
-	//		else{
-	//			System.out.println("Number error");
-	//			close();
-	//		}
-	//		return -1;
-	//	}
-
+	
 	//method checks if string is numeric
 	public static boolean isNumeric(String str)
 	{
