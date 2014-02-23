@@ -973,7 +973,6 @@ public class Alebata2 {
 				{
 					if(E())
 					{
-						System.out.println("here");
 						getNextToken();
 						skipSpace();
 						gawin();
@@ -1023,8 +1022,6 @@ public class Alebata2 {
 					callMe();
 					if(token.equals("TAMA"))
 						break;
-					getNextToken();
-					skipSpace();
 					if(token == null){
 						System.out.println("Syntax error");
 						close();
@@ -1190,9 +1187,9 @@ public class Alebata2 {
 			}
 			else{
 				getNextToken();
+				
 				string = "";
 				while(token != null && !token.equals("DQUOTE")){
-					getNextToken();
 					if(token != null && token.equals("DQUOTE") && (string.length() > 0 && string.charAt(string.length()-1) == '\\')){
 						string = string.substring(0, string.length()-1) + "\"";
 						getNextToken();
@@ -1200,6 +1197,7 @@ public class Alebata2 {
 					else{
 						string += lexemes.get(index-1);
 					}
+					getNextToken();
 				}
 				return string;
 			}
