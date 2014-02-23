@@ -784,6 +784,7 @@ public class Alebata2 {
 
 			}
 			else{
+				getNextToken();
 				skipSpace();
 				F(7);
 			}
@@ -831,8 +832,8 @@ public class Alebata2 {
 				float num;
 				float varNum = Float.parseFloat(varType.value);
 				if(token.equals("IDENT")){
-					if(variables.get(variables.get(lexemes.get(index-1))) == null){
-						System.out.println("Declare " + variables.get(lexemes.get(index-1)));
+					if(variables.get(lexemes.get(index-1)) == null){
+						System.out.println("Declare " + lexemes.get(index-1));
 						close();
 					}
 
@@ -841,12 +842,12 @@ public class Alebata2 {
 						System.out.println("Can't compare non-number types");
 						close();
 					}
-					num = Float.parseFloat(lexemes.get(index-1));
-
+					num = Float.parseFloat(compareVar.value);
 				}
 				else{
 					num = Float.parseFloat(lexemes.get(index-1));
 				}
+				
 				return varNum <= num;
 
 			}
@@ -865,8 +866,8 @@ public class Alebata2 {
 				float num;
 				float varNum = Float.parseFloat(varType.value);
 				if(token.equals("IDENT")){
-					if(variables.get(variables.get(lexemes.get(index-1))) == null){
-						System.out.println("Declare " + variables.get(lexemes.get(index-1)));
+					if(variables.get(lexemes.get(index-1)) == null){
+						System.out.println("Declare " + lexemes.get(index-1));
 						close();
 					}
 
@@ -875,8 +876,7 @@ public class Alebata2 {
 						System.out.println("Can't compare non-number types");
 						close();
 					}
-					num = Float.parseFloat(lexemes.get(index-1));
-
+					num = Float.parseFloat(compareVar.value);
 				}
 				else{
 					num = Float.parseFloat(lexemes.get(index-1));
@@ -899,7 +899,37 @@ public class Alebata2 {
 			close();
 		}
 		else{
-			System.out.println("AY PAREHO SA");
+			if(token.equals("DQUOTE") || token.equals("IDENT")){
+				System.out.println(varType.type);
+				if(!varType.type.equals("string")){
+					System.out.println("Can only compare strings for AY PAREHO SA");
+					close();
+				}
+				String string;
+				String varString = varType.value;
+				if(token.equals("IDENT")){
+					if(variables.get(lexemes.get(index-1)) == null){
+						System.out.println("Declare " +lexemes.get(index-1));
+						close();
+					}
+
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					if(!compareVar.type.equals("string")){
+						System.out.println("Can't compare non-string types");
+						close();
+					}
+					string = variables.get(lexemes.get(index-1));
+				}
+				else{
+					string = lexemes.get(index-1);
+				}
+				return string.equals(varString);
+
+			}
+			else{
+				System.out.println("Can only compare string for AY PAREHO SA");
+				close();
+			}
 			close();
 		}
 		return true;
