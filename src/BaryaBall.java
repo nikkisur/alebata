@@ -29,7 +29,7 @@ public class BaryaBall {
 		}
 
 		//by this time, validity of value should no longer be needed
-		if((v.equals("TAMA") || v.equals("FALSE")) && !digitLahat) 
+		if((v.equals("TAMA") || v.equals("MALI")) && !digitLahat) 
 			type = "boolean";
 		else if(digitLahat) 
 			type = "number";
