@@ -904,12 +904,12 @@ public class Alebata2 {
 						close();
 					}
 
-					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)));
+					BaryaBall compareVar = new BaryaBall("", variables.get(lexemes.get(index-1)).getValue());
 					if(!compareVar.type.equals("string")){
 						System.out.println("Can't compare non-string types");
 						close();
 					}
-					string = variables.get(lexemes.get(index-1));
+					string = variables.get(lexemes.get(index-1)).getValue();
 				}
 				else{
 					getNextToken();
