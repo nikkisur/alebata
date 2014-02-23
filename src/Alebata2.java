@@ -165,31 +165,31 @@ public class Alebata2 {
 		}
 	}
 
+	// var declaration
 	//B -> 'NG' IDENT 
 	public static void B(){
 		if(token != null){
 			if(token.equals("TYPE2")){
 				getNextToken();
-				if(token.equals("IDENT")){
-					BaryaBall ball = new BaryaBall("", lexemes.get(index-1));
-					if(ball.type.equals("number")){
-						int arrayNum = Integer.parseInt(ball.value);
+				if(token.equals("NUMBER"))
+				{
+					int arrayNum = Integer.parseInt(lexemes.get(index-1));
+					getNextToken();
+					if(token != null && token.equals("ARRAYTYPE")){
 						getNextToken();
-						if(token != null && token.equals("ARRAYTYPE")){
+						if(token != null && (token.equals("IDENT") || token.equals("NUMBER")))
+						{
+							checkVar(lexemes.get(index-1), true, arrayNum);
 							getNextToken();
-							if(token != null && token.equals("IDENT")){
-								checkVar(lexemes.get(index-1), true, arrayNum);
-								getNextToken();
-							}
-							else{
-								System.out.println("Wrong syntax: GAWA NG <num> NA <var>");
-								close();
-							}
 						}
 						else{
-							System.out.println("Wrong syntax");
+							System.out.println("Wrong syntax: GAWA NG <num> NA <var>");
 							close();
 						}
+					}
+					else{
+						System.out.println("Wrong syntax");
+						close();
 					}
 				}
 				else{
@@ -211,7 +211,8 @@ public class Alebata2 {
 		}
 	}
 
-	//C -> 'AY'
+	// var assignment
+	// C -> 'AY' 
 	public static void C(){
 		String var = lexemes.get(index-2);
 		if(variables.get(lexemes.get(index-2)) != null){
@@ -230,14 +231,15 @@ public class Alebata2 {
 					}
 					variables.put(var, value);
 				}
-				else if(token.equals("IDENT") || token.equals("TRUE") || token.equals("FALSE")){
-					//					if(token.equals("IDENT")){	
+				else if(token.equals("IDENT") || token.equals("NUMBER") || token.equals("TRUE") || token.equals("FALSE")){
+					//if(token.equals("IDENT")){	
 					String tempVar = "";
 					Boolean value = null;
 					BaryaBall varType = null;
 
-					if(token.equals("IDENT")){
+					if(token.equals("IDENT") || token.equals("NUMBER")){
 						tempVar = lexemes.get(index-1);
+						System.out.println("tempVar "+tempVar);
 						if(variables.get(tempVar) != null){
 							varType = new BaryaBall("", variables.get(tempVar));
 							if(varType.type.equals("boolean")){
