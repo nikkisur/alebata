@@ -101,6 +101,7 @@ public class Alebata2 {
 			token = null;
 		else
 			token = tokens.get(index++);
+		//System.out.println(token + " " +index);
 	}
 
 	// S -> A
@@ -136,9 +137,10 @@ public class Alebata2 {
 		}
 		else if(token.equals("IDENT")){
 			var = lexemes.get(index-1);
+			System.out.println(lexemes.get(index-1) + " ident error");
 			getNextToken();
 			skipSpace();
-			System.out.println(token);
+			System.out.println(token + " ident error");
 			if(token == null){
 				System.out.println("Invalid syntax");
 				close();
@@ -170,6 +172,17 @@ public class Alebata2 {
 				close();
 			}
 			Z();
+		}
+		else if (token.equals("MULA"))
+		{
+			getNextToken();
+			skipSpace();
+			if(token == null)
+			{
+				System.out.println("Invalid syntax for HABANG");
+				close();
+			}
+			iteration();
 		}
 		getNextToken();
 		skipSpace();
@@ -696,7 +709,8 @@ public class Alebata2 {
 			}
 		}
 		else{
-			System.out.println("Syntax error: ILABAS MO BEYBEH <value>");
+			System.out.println("Syntax error: ILABAS MO BEYBEH <value> x");
+			System.out.println(token);
 			close();
 		}
 	}
@@ -1021,7 +1035,9 @@ public class Alebata2 {
 				{
 					callMe();
 					if(token.equals("TAMA"))
+					{
 						break;
+					}
 					if(token == null){
 						System.out.println("Syntax error");
 						close();
@@ -1046,14 +1062,14 @@ public class Alebata2 {
 						close();
 					}
 				}
-				getNextToken();
+				/*getNextToken();
 				skipSpace();
 				if(token == null){
 					close();
 				}
 				while(true){
 					if(token == null){
-						System.out.println("Syntax error");
+						System.out.println("Syntax errorx");
 						close();
 					}
 					if(token.equals("TAMA")){
@@ -1075,7 +1091,7 @@ public class Alebata2 {
 					}
 					getNextToken();
 					skipSpace();
-				}
+				}*/
 			}
 			else
 			{
@@ -1122,6 +1138,158 @@ public class Alebata2 {
 		{
 			System.out.println("Error: Expected PERO");
 			close();
+		}
+	}
+
+	public static void iteration()
+	{
+		int start = 0;
+		int end = 0;
+		if(token.equals("IDENT"))	
+		{
+			var = lexemes.get(index-1);
+			if(variables.get(var) != null) // variable exists
+			{
+				if(variables.get(var).getType() == "number")
+				{
+					start = (int) Double.parseDouble(variables.get(var).getValue());
+				}
+				else
+				{
+					System.out.println("MULA Error: variable is not of type num");
+					close();
+				}
+			}
+			else
+			{
+				getNextToken();
+				skipSpace();
+				if(token.equals("AY"))
+				{
+					getNextToken();
+					skipSpace();
+					if(token.equals("NUMBER"))
+					{
+						start = Integer.parseInt(lexemes.get(index-1));
+					}
+					else
+					{
+						System.out.println("MULA Error: variable must be of type num");
+						close();
+					}
+				}
+				else
+				{
+					System.out.println("MULA Error: Expected AY");
+					close();
+				}
+			}
+			getNextToken();
+			skipSpace();
+			if(token.equals("HANGGANG"))
+			{
+				getNextToken();
+				skipSpace();
+				if(token.equals("NUMBER"))
+				{
+					end = Integer.parseInt(lexemes.get(index-1));
+				}
+				else
+				{
+					System.out.println("MULA Error: Expected number");
+					close();
+				}
+			}
+			else
+			{
+				System.out.println("MULA Error: Expected HANGGANG");
+				close();
+			}
+			getNextToken();
+			skipSpace();
+			if(token.equals("GAWIN"))
+			{
+				getNextToken();
+				skipSpace();
+				if(!token.equals("ITO"))
+				{
+					System.out.println("MULA Error: Expected ITO");
+					close();
+				}
+			}
+			else
+			{
+				System.out.println("MULA Error: Expected GAWIN");
+				close();
+			}
+			getNextToken();
+			skipSpace();
+			int instr_start = index-1;
+			int instr_end = 0;
+			while(!token.equals("TAMA"))
+			{
+				if(start != end)
+				{
+					//System.out.println("DOOO");
+					callMe();
+					if(token.equals("TAMA"))
+					{
+						instr_end = index-1;
+						break;
+					}
+					if(token == null){
+						System.out.println("Syntax error");
+						close();
+					}
+				}
+				//getNextToken();
+				//skipSpace();
+			}
+			for(int i = start+1; i <= end; i++)
+			{
+				index = instr_start;
+				getNextToken();
+				skipSpace();	
+				while(!token.equals("TAMA"))
+				{
+					callMe();
+					if(token.equals("TAMA"))
+						break;
+					if(token == null)
+					{
+						System.out.println("Syntax error");
+						close();
+					}
+				}
+			}
+			getNextToken();
+			skipSpace();
+			if(!token.equals("NA"))
+			{
+				System.out.println("Mula Error: No NA");
+				close();				
+			}
+			else{
+				getNextToken();
+				skipSpace();
+				if(token == null){
+					System.out.println("Needs !");
+					close();
+				}
+				if(!token.equals("TERMINATOR")){
+					System.out.println("Syntax error: missing !");
+					close();
+				}
+			}
+			/*getNextToken();
+			skipSpace();
+			if(token == null){
+				close();
+			}*/
+		}
+		else
+		{
+			System.out.println("Error on <var_name>: MULA <var_name> HANGGANG <value>");
 		}
 	}
 
